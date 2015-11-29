@@ -26,3 +26,10 @@
 *.exe
 *.out
 *.app
+
+
+# Root file
+*.root
+
+# Vim temporary files
+*.swp

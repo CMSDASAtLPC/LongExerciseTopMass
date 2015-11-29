@@ -16,14 +16,27 @@ cd UserCode/MtopFromEbPeak
 
 This repository is organised in 3 parts:
    * in the `familiarization` folder, you will write a Python script to read a TTree from a TFile;
-   * in the `analyze` folder, you will write a Python script to select top-pair events that decay in the e&#956 channel, compare the selection on data and simulation (control distributions and event yields), and propagate the sources of systematic uncertainties to the b jet energy peak;
-   * in the `fitNcalibration` folder, you will write a C macro, that you will compiled in Root, to fit the b jet energy peak, calibrate the sensitivity of this variable to the top-quark mass, and evaluate the performance of the method.
+   * in the `analyzeNplot` folder, you will write a Python script to select top-pair events that decay in the e&#956 channel, compare the selection on data and simulation (control distributions and event yields), and propagate the sources of systematic uncertainties to the b jet energy peak;
+   * in the `fitNcalibrate` folder, you will write a C macro, that you will compiled in Root, to fit the b jet energy peak, calibrate the sensitivity of this variable to the top-quark mass, and evaluate the performance of the method.
 
 ## Browsing the content of a TFile
 
 ## Selecting events
 
-selection, plots, event yields
+This step must be run in the `analyzeNplot` folder. 
+
+To run the event selection and basic filling of histograms using a pre-defined list of samples and cross sections, one can use the following script 
+```
+python runBJetEnergyPeak.py -i /uscms_data/d3/ebouvier/CMS_DAS_FNAL/ -j data/samples_Run2015_25ns.json -o nominal -n 8
+```
+Indeed, the Root files to analyze are store in `/uscms_data/d3/ebouvier/CMS_DAS_FNAL/,` while the `data`subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
+
+The results are stored in Root files int the `nominal` subfolder. They can be plotted together and compared to data using
+```
+python plotter.py -i nominal -j data/samples_Run2015_25ns.json  -l 2444.
+```
+Under `nominal/plots` you'll find a file called `plotter.root`, containing the histograms with the distributions
+normalized by integrated luminosity (2444 /pb,) together with `png` and `pdf` versions of the plots.
 
 ## Fitting the b jet energy peak
 
