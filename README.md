@@ -21,6 +21,8 @@ This repository is organised in 3 parts:
 
 ## Browsing the content of a TFile
 
+The first step of the exercise consists in opening an input file stored in `/uscms_data/d3/ebouvier/CMS_DAS_FNAL/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`. 
+
 ## Selecting events
 
 This step must be run in the `analyzeNplot` folder. 
@@ -38,7 +40,14 @@ python plotter.py -i nominal -j data/samples_Run2015_25ns.json  -l 2444.
 Under `nominal/plots` you'll find a file called `plotter.root`, containing the histograms with the distributions
 normalized by integrated luminosity (2444 /pb,) together with `png` and `pdf` versions of the plots.
 
+The number of events selected from data and simulations can be obtained from
+```
+python getNumberOfEvents.py -i nominal -o table
+```
+
 ## Fitting the b jet energy peak
+
+This step must be run in the `fitNcalibrate` folder one you have produced a `plotter.root` file. 
 
 ## Calibration
 

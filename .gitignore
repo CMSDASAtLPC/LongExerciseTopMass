@@ -28,8 +28,12 @@
 *.app
 
 
-# Root file
+# Output files
 *.root
+*.tex
+*.png
+*.pdf
 
 # Vim temporary files
 *.swp
+
