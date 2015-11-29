@@ -47,9 +47,11 @@ python getNumberOfEvents.py -i nominal -o table
 
 ## Fitting the b jet energy peak
 
-This step must be run in the `fitNcalibrate` folder one you have produced a `plotter.root` file. 
-
-## Calibration
-
-## Systematic uncertainties
+This step must be run in the `fitNcalibrate` folder. A skeleton that you can compile and execute in Root is provided
+```
+root -l
+.L fitPeak.C++
+fitPeak("nominal","Data13TeV_MuonEG_2015D_v4")
+.q
+```
 
