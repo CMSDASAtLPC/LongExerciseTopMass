@@ -11,7 +11,7 @@ setenv SCRAM_ARCH slc6_amd64_gcc491
 ```
    * in bash/sh:
 ```
-SCRAM_ARCH = slc6_amd64_gcc491; export SCRAM_ARCH
+export SCRAM_ARCH=slc6_amd64_gcc491
 ```
 Then, install the code by doing
 ```
@@ -25,8 +25,8 @@ cd UserCode/MtopFromEbPeak
 
 This repository is organised in 3 parts:
    * in the `familiarization` folder, you will write a Python script to read a TTree from a TFile;
-   * in the `analyzeNplot` folder, you will write a Python script to select top-pair events that decay in the e&#956 channel, compare the selection on data and simulation (control distributions and event yields), and propagate the sources of systematic uncertainties to the b jet energy peak;
-   * in the `fitNcalibrate` folder, you will write a C macro, that you will compiled in Root, to fit the b jet energy peak, calibrate the sensitivity of this variable to the top-quark mass, and evaluate the performance of the method.
+   * in the `analyzeNplot` folder, you will write a Python script to select top-pair events that decay in the e&#956; channel, compare the selection on data and simulation (control distributions and event yields), and propagate the sources of systematic uncertainties to the b jet energy peak;
+   * in the `fitNcalibrate` folder, you will write a C macro, that you will compiled in Root, to fit the b jet energy peak. In this same folder, you will then calibrate the b jet energy peak measured for the set of selection criteria previously defined to the expected b jet energy peak, from which the top-quark mass can be easily extracted. You will also evaluate the performance of the method.
 
 ## Browsing the content of a TFile
 
@@ -60,7 +60,7 @@ This step must be run in the `fitNcalibrate` folder. A skeleton that you can com
 ```
 root -l
 .L fitPeak.C++
-fitPeak("nominal","Data13TeV_MuonEG_2015D_v4")
+fitPeak("nominal",true)
 .q
 ```
-
+The first argument of the `fitPeak` function is the folder in which the `plotter.root` file has been previously produced. The second argument is a boolean that should be set to `true` is you want to fit data, `false` if you want to fit simulations (signal+background, normalized at their cross-sections, are fitted together).
