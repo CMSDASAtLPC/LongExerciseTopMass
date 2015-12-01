@@ -254,6 +254,9 @@ double *gPeak(TString dir, bool isData)
   // Set gaussian width starting value and limits
   fitfunc->SetParameter(1, 0.65);
   fitfunc->SetParLimits(1, 0.35, 0.95);
+  // Set normalization
+  fitfunc->SetParameter(2, histo->Integral());
+  fitfunc->SetParLimits(2, 0.1*histo->Integral(), 2.5*histo->Integral());
 
   // Fit the histogram
   histo->Fit("Gaussian fit", "LEM", "", 3.6, 4.8); 
