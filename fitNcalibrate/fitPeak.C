@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "TROOT.h"
+#include "TMath.h"
 #include "TStyle.h"
 #include "TLatex.h"
 #include "TLegend.h"
@@ -142,6 +143,39 @@ TStyle* createMyStyle() {
   return myStyle;
 }
 
+void h_myStyle(TH1 *h,
+    int line_color=1,
+    int fill_color=50,
+    int fill_style=1001,
+    double y_min=-1111.,
+    double y_max=-1111.,
+    int ndivx=510,
+    int ndivy=510,
+    int marker_style=20,
+    int marker_color=1,
+    double marker_size=1.2,
+    int optstat=0) {
+
+  h->SetLineColor(line_color);
+  h->SetFillColor(fill_color);
+  h->SetFillStyle(fill_style);
+  h->SetMaximum(y_max);
+  h->SetMinimum(y_min);
+  h->GetXaxis()->SetNdivisions(ndivx);
+  h->GetYaxis()->SetNdivisions(ndivy);
+  h->GetYaxis()->SetTitleOffset(2.5);
+
+  h->SetMarkerStyle(marker_style);
+  h->SetMarkerColor(marker_color);
+  h->SetMarkerSize(marker_size);
+  h->SetStats(optstat);
+
+  double binSize = h->GetXaxis()->GetBinWidth(1);
+  std::stringstream ss;
+  ss << "1/E dN/dlog(E) / " << std::fixed << std::setprecision(1) << binSize;
+  h->GetYaxis()->SetTitle(ss.str().c_str());
+}
+
 void leg_myStyle(TLegend *leg,
     int text_align = 12,
     int fill_style = 1,
@@ -185,50 +219,80 @@ void cms_myStyle(bool isData = true, int lumi = 2444){
 }
 
 //---------------------------------------------------------------
-double *gPeak(TString dir, TString file)
+double myFitFunc(double *x, double *par)
   //---------------------------------------------------------------
 {
-  using namespace RooFit;
+  return par[2]*TMath::Gaus(x[0],par[0],par[1],kFALSE);
+}
 
-  TFile *res = TFile::Open("../analyzeNplot/"+dir+"/"+file+".root");
+//---------------------------------------------------------------
+double *gPeak(TString dir, bool isData)
+  //---------------------------------------------------------------
+{
+  // Open file and get the histogram
+  TFile *res = TFile::Open("../analyzeNplot/"+dir+"/plots/plotter.root");
+  TString hName = "bjetenls/";
+  if (isData)
+    hName = hName + "bjetenls";
+  else 
+    hName = hName + "bjetenls_t#bar{t}";
+  TH1F *histo = (TH1F*)res->Get(hName)->Clone();
+  histo->Sumw2();
+  histo->SetDirectory(0);
+  if (!isData) {
+    histo->Add((TH1F*)res->Get("bjetenls/bjetenls_t#bar{t}+V")->Clone());
+    histo->Add((TH1F*)res->Get("bjetenls/bjetenls_DY")->Clone());
+    histo->Add((TH1F*)res->Get("bjetenls/bjetenls_W")->Clone());
+    histo->Add((TH1F*)res->Get("bjetenls/bjetenls_Diboson")->Clone());
+  }
 
-  RooRealVar Eb("mass", "E_{b}", 3., 7., "GeV");
-  RooRealVar mean_gaus("mean_gaus", "mass_gaus", 4., 4.2, 4.4);
-  RooRealVar width_gaus("width_gaus", "width_gaus", 0.35, 0.65, 0.95);
+  // Define the fit function
+  TF1* fitfunc = new TF1("Gaussian fit", myFitFunc, 3.6, 4.8, 3);
+  // Set gaussian mean starting value and limits
+  fitfunc->SetParameter(0, 4.2);
+  fitfunc->SetParLimits(0, 4., 4.4);
+  // Set gaussian width starting value and limits
+  fitfunc->SetParameter(1, 0.65);
+  fitfunc->SetParLimits(1, 0.35, 0.95);
 
-  TH1F *histo = (TH1F*)res->Get("bjetenls");
-  RooDataHist *datahist = new RooDataHist("datahist", "datahist", RooArgList(Eb), histo, 1.);
-  RooGaussian pdf("Gall", "Gall", Eb, mean_gaus, width_gaus);
-  pdf.fitTo(*datahist, Range(3.6, 4.8), SumW2Error(kTRUE));
+  // Fit the histogram
+  histo->Fit("Gaussian fit", "LEM", "", 3.6, 4.8); 
+  // "L" stands for likelihood fit, "E" for Minos, "M" for improving fit results
+  // cf. ftp://root.cern.ch/root/doc/5FittingHistograms.pdf
 
+  // Plot the result
   TCanvas *cn = new TCanvas("cn", "cn", 800, 800);
   cn->cd();
-  RooPlot *massframe = Eb.frame();
-  datahist->plotOn(massframe, DataError(RooAbsData::SumW2)); 
-  pdf.plotOn(massframe, LineColor(38), Range(3.6, 4.8), Name("bleu"));
-  massframe->Draw();
+  h_myStyle(histo,38,38,3002,histo->GetMinimum(),1.2*histo->GetMaximum(),510,510,20,38,1.,0.);
+  histo->Draw("hist");
+  fitfunc->SetLineColor(38); fitfunc->SetLineStyle(2); fitfunc->SetLineWidth(2);
+  fitfunc->Draw("same");
   TLegend *leg = new TLegend(0.58,0.82,0.93,0.92,NULL,"brNDC");
   leg->SetTextSize(0.025);
   leg->SetHeader("Gaussian fit parameters:");
-  leg->AddEntry(massframe->findObject("bleu"), TString::Format("#mu = (%4.2f #pm %4.2f) GeV/c^{2}",mean_gaus.getVal(),mean_gaus.getError()), "l");
-  leg->AddEntry((TObject*)0, TString::Format("#sigma = (%4.2f #pm %4.2f) GeV/c^{2}",width_gaus.getVal(),width_gaus.getError()), "");
+  leg->AddEntry(histo, TString::Format("#mu = (%4.2f #pm %4.2f) GeV/c^{2}",fitfunc->GetParameter(0),fitfunc->GetParError(0)), "f");
+  leg->AddEntry((TObject*)0, TString::Format("#sigma = (%4.2f #pm %4.2f) GeV/c^{2}",fitfunc->GetParameter(1),fitfunc->GetParError(1)), "");
   leg_myStyle(leg);
   leg->Draw("same");
-  massframe->Draw("same");
-  cms_myStyle(false);
-  cn->SaveAs(dir+"/fit_"+file+".pdf");
-  cn->SaveAs(dir+"/fit_"+file+".png");
+  cms_myStyle(isData);
+  TString sName = dir+"/fit_";
+  if (isData)
+    sName = sName+"Data";
+  else 
+    sName = sName+"MC";
+  cn->SaveAs(sName+".pdf");
+  cn->SaveAs(sName+".png");
 
   res->Close();
 
   double *resPeak = new double[2];
-  resPeak[0] = mean_gaus.getVal();
-  resPeak[1] = mean_gaus.getError();
+  resPeak[0] = fitfunc->GetParameter(0);
+  resPeak[1] = fitfunc->GetParError(0);
   return resPeak;
 }
 
 //---------------------------------------------------------------
-int fitPeak(TString dir = "nominal", TString file = "MC13TeV_TTJets")
+int fitPeak(TString dir = "nominal", bool isData = true)
 //---------------------------------------------------------------
 {  
   TStyle* my_style = createMyStyle();
@@ -237,7 +301,7 @@ int fitPeak(TString dir = "nominal", TString file = "MC13TeV_TTJets")
 
   gROOT->ProcessLine(".! mkdir "+dir);
 
-  double *peakPos = gPeak(dir, file); 
+  double *peakPos = gPeak(dir, isData); 
   TString res = TString::Format("<E_{b}> = (%3.2f #pm %3.2f) GeV", peakPos[0], peakPos[1]);
   cout << res << endl;
 

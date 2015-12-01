@@ -4,7 +4,16 @@ The objective is not only to extract the top-quark mass by measuring the peak po
 
 ## Installation
 
-To install the code do
+Before installing a fresh CMSSW release, do
+   * in csh/tcsh:
+```
+setenv SCRAM_ARCH slc6_amd64_gcc491
+```
+   * in bash/sh:
+```
+SCRAM_ARCH = slc6_amd64_gcc491; export SCRAM_ARCH
+```
+Then, install the code by doing
 ```
 cmsrel CMSSW_7_4_14
 cd CMSSW_7_4_14/src
