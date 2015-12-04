@@ -21,7 +21,7 @@ This repository is organised in 3 parts:
 
 ## Browsing the content of a TFile
 
-The first step of the exercise consists in opening an input file stored in `/uscms_data/d3/ebouvier/CMS_DAS_FNAL/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`. 
+The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
 
 ## Selecting events
 
@@ -29,9 +29,9 @@ This step must be run in the `analyzeNplot` folder.
 
 To run the event selection and basic filling of histograms using a pre-defined list of samples and cross sections, one can use the following script 
 ```
-python runBJetEnergyPeak.py -i /uscms_data/d3/ebouvier/CMS_DAS_FNAL/ -j data/samples_Run2015_25ns.json -o nominal -n 8
+python runBJetEnergyPeak.py -i /store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/ -j data/samples_Run2015_25ns.json -o nominal -n 8
 ```
-Indeed, the Root files to analyze are store in `/uscms_data/d3/ebouvier/CMS_DAS_FNAL/,` while the `data`subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
+Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
 
 The results are stored in Root files int the `nominal` subfolder. They can be plotted together and compared to data using
 ```
@@ -42,7 +42,7 @@ normalized by integrated luminosity (2444 /pb,) together with `png` and `pdf` ve
 
 The number of events selected from data and simulations can be obtained from
 ```
-python getNumberOfEvents.py -i nominal -o table
+python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2015_25ns.json
 ```
 
 ## Fitting the b jet energy peak

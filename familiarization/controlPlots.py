@@ -7,7 +7,7 @@ from ROOT import TFile, TCanvas
 
 ## Plot b-tagged jet transverse momentum for data
 # Open the file
-fiData = TFile.Open("/uscms_data/d3/ebouvier/CMS_DAS_FNAL/Data13TeV_MuonEG_2015D_v4.root", "READ")
+fiData = TFile.Open(" root://cmsxrootd.fnal.gov///store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/Data13TeV_MuonEG_2015D_v4.root", "READ")
 # Get the tree
 treeData = fiData.Get("data")
 
@@ -23,7 +23,7 @@ c1.SaveAs("plotData.png")
 
 ## Plot b jet generated transverse momentumm for MC
 # Open the file
-fiMC = TFile.Open("/uscms_data/d3/ebouvier/CMS_DAS_FNAL/MC13TeV_TTJets.root", "READ")
+fiMC = TFile.Open(" root://cmsxrootd.fnal.gov///store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/MC13TeV_TTJets.root", "READ")
 # Get the tree
 treeMC = fiMC.Get("data")
 

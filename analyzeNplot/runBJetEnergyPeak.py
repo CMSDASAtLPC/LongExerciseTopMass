@@ -119,7 +119,7 @@ def main():
     #create the analysis jobs
     taskList = []
     for sample, sampleInfo in samplesList: 
-        inFileURL  = '%s/%s.root' % (opt.inDir,sample)
+        inFileURL  = 'root://cmsxrootd.fnal.gov//%s/%s.root' % (opt.inDir,sample)
         if not os.path.isfile(inFileURL): continue
         xsec=sampleInfo[0] if sampleInfo[1]==0 else None        
         outFileURL = '%s/%s.root' % (opt.outDir,sample)
