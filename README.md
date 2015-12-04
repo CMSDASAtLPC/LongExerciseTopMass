@@ -51,7 +51,7 @@ normalized by integrated luminosity (2444 /pb,) together with `png` and `pdf` ve
 
 The number of events selected from data and simulations can be obtained from
 ```
-python getNumberOfEvents.py -i nominal -o table
+python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2015_25ns.json
 ```
 
 ## Fitting the b jet energy peak
