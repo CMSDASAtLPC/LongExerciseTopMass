@@ -38,7 +38,7 @@ This step must be run in the `analyzeNplot` folder.
 
 To run the event selection and basic filling of histograms using a pre-defined list of samples and cross sections, one can use the following script 
 ```
-python runBJetEnergyPeak.py -i /store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/ -j data/samples_Run2015_25ns.json -o nominal -n 8
+python runBJetEnergyPeak.py -i /store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak -j data/samples_Run2015_25ns.json -o nominal -n 8
 ```
 Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
 
