@@ -7,10 +7,12 @@ The objective is not only to extract the top-quark mass by measuring the peak po
 Before installing a fresh CMSSW release, do
    * in csh/tcsh:
 ```
+source /cvmfs/cms.cern.ch/cmsset_default.csh
 setenv SCRAM_ARCH slc6_amd64_gcc491
 ```
    * in bash/sh:
 ```
+source /cvmfs/cms.cern.ch/cmsset_default.sh
 export SCRAM_ARCH=slc6_amd64_gcc491
 ```
 Then, install the code by doing
@@ -31,6 +33,8 @@ This repository is organised in 3 parts:
 ## Browsing the content of a TFile
 
 The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
+
+_The input files have been produced thanks to a [[https://github.com/pfs/BJetEnergyPeak][setup]] kindly provided by P. Silva._
 
 ## Selecting events
 
