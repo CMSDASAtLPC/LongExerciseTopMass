@@ -34,7 +34,7 @@ This repository is organised in 3 parts:
 
 The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
 
-_The input files have been produced thanks to a [[https://github.com/pfs/BJetEnergyPeak][setup]] kindly provided by P. Silva._
+_The input files have been produced thanks to a [setup](https://github.com/pfs/BJetEnergyPeak) kindly provided by P. Silva._
 
 ## Selecting events
 
