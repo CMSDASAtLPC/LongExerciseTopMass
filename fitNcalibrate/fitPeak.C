@@ -246,8 +246,11 @@ double *gPeak(TString dir, bool isData)
     histo->Add((TH1F*)res->Get("bjetenls/bjetenls_Diboson")->Clone());
   }
 
+  // Set fit range
+  float xmin = 3.6;
+  float xmax = 4.8;
   // Define the fit function
-  TF1* fitfunc = new TF1("Gaussian fit", myFitFunc, 3.6, 4.8, 3);
+  TF1* fitfunc = new TF1("Gaussian fit", myFitFunc, xmin, xmax, 3);
   // Set gaussian mean starting value and limits
   fitfunc->SetParameter(0, 4.2);
   fitfunc->SetParLimits(0, 4., 4.4);
@@ -259,7 +262,7 @@ double *gPeak(TString dir, bool isData)
   fitfunc->SetParLimits(2, 0.1*histo->Integral(), 2.5*histo->Integral());
 
   // Fit the histogram
-  histo->Fit("Gaussian fit", "LEM", "", 3.6, 4.8); 
+  histo->Fit("Gaussian fit", "LEM", "", xmin, xmax); 
   // "L" stands for likelihood fit, "E" for Minos, "M" for improving fit results
   // cf. ftp://root.cern.ch/root/doc/5FittingHistograms.pdf
 
@@ -267,13 +270,13 @@ double *gPeak(TString dir, bool isData)
   TCanvas *cn = new TCanvas("cn", "cn", 800, 800);
   cn->cd();
   h_myStyle(histo,38,38,3002,histo->GetMinimum(),1.2*histo->GetMaximum(),510,510,20,38,1.,0.);
-  histo->Draw("hist");
+  histo->Draw("e1");
   fitfunc->SetLineColor(38); fitfunc->SetLineStyle(2); fitfunc->SetLineWidth(2);
   fitfunc->Draw("same");
-  TLegend *leg = new TLegend(0.58,0.82,0.93,0.92,NULL,"brNDC");
-  leg->SetTextSize(0.025);
+  TLegend *leg = new TLegend(0.5,0.82,0.93,0.92,NULL,"brNDC");
+  leg->SetTextSize(0.035);
   leg->SetHeader("Gaussian fit parameters:");
-  leg->AddEntry(histo, TString::Format("#mu = (%4.2f #pm %4.2f) GeV/c^{2}",fitfunc->GetParameter(0),fitfunc->GetParError(0)), "f");
+  leg->AddEntry(fitfunc, TString::Format("#mu = (%4.2f #pm %4.2f) GeV/c^{2}",fitfunc->GetParameter(0),fitfunc->GetParError(0)), "l");
   leg->AddEntry((TObject*)0, TString::Format("#sigma = (%4.2f #pm %4.2f) GeV/c^{2}",fitfunc->GetParameter(1),fitfunc->GetParError(1)), "");
   leg_myStyle(leg);
   leg->Draw("same");
