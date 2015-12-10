@@ -60,11 +60,15 @@ python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2015_25ns.jso
 
 ## Fitting the b jet energy peak
 
-This step must be run in the `fitNcalibrate` folder. A skeleton that you can compile and execute in Root is provided
+This step must be run in the `fitNcalibrate` folder. A python skeleton named `fitPeak.py` is provided. For MC, the usage is:
 ```
-root -l
-.L fitPeak.C++
-fitPeak("nominal",true)
-.q
+python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2444.
 ```
-The first argument of the `fitPeak` function is the folder in which the `plotter.root` file has been previously produced. The second argument is a boolean that should be set to `true` is you want to fit data, `false` if you want to fit simulations (signal+background, normalized at their cross-sections, are fitted together).
+while for data, it is:
+```
+python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2444. -d
+```
+The argument following `-i` is the folder in which the `plotter.root` file has been previously produced. As previously, `-l` precedes the luminosity and `-j` the path for the json file. 
+
+For simulations, signal+background, normalized at their cross-sections, are fitted together.
+
