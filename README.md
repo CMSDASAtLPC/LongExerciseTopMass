@@ -67,7 +67,7 @@ python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.jso
 ```
 while for data, it is:
 ```
-python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2444. -d
+python fitPeak.py -i "nominal" -l 2444. -d
 ```
 The argument following `-i` is the folder in which the `plotter.root` file has been previously produced. As previously, `-l` precedes the luminosity and `-j` the path for the json file. 
 
