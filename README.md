@@ -25,10 +25,11 @@ git clone git@github.com:ebouvier/MtopFromEbPeak.git UserCode/MtopFromEbPeak
 cd UserCode/MtopFromEbPeak
 ```
 
-This repository is organised in 3 parts:
+This repository is organised in 4 parts:
    * in the `familiarization` folder, you will write a Python script to read a TTree from a TFile;
    * in the `analyzeNplot` folder, you will write a Python script to select top-pair events that decay in the e&#956; channel, compare the selection on data and simulation (control distributions and event yields), and propagate the sources of systematic uncertainties to the b jet energy peak;
-   * in the `fitNcalibrate` folder, you will write a C macro, that you will compiled in Root, to fit the b jet energy peak. In this same folder, you will then calibrate the b jet energy peak measured for the set of selection criteria previously defined to the expected b jet energy peak, from which the top-quark mass can be easily extracted. You will also evaluate the performance of the method.
+   * in the `fitNcalibrate` folder, you will write a python script to fit the b jet energy peak. In this same folder, you will then calibrate the b jet energy peak measured for the set of selection criteria previously defined to the expected b jet energy peak, from which the top-quark mass can be easily extracted. You will also evaluate the performances of the method.
+   * in the `finalize` folder, a macro named `showComparison.C` will enable you to compare your result with the standard top-quark mass measurements performed with 8 TeV data.
 
 ## Browsing the content of a TFile
 
@@ -71,4 +72,15 @@ python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.jso
 The argument following `-i` is the folder in which the `plotter.root` file has been previously produced. As previously, `-l` precedes the luminosity and `-j` the path for the json file. 
 
 For simulations, signal+background, normalized at their cross-sections, are fitted together.
+
+## Comparing your result with CMS legacy results
+
+Once you have unblinded your analysis, you can do:
+```
+root -l
+.L showComparison.C
+showComparison(lumi, value, stat, syst)
+.q
+```
+replacing `lumi` by the top-quark mass you measured, and `stat` and `syst` respectively by the statistical and systematic uncertainties of this measurement. You will get a comparison between your measurement and the standard top-quark mass measurements performed with 8 TeV data.
 
