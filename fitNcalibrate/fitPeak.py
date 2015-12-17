@@ -210,7 +210,11 @@ def main():
                    if sampleInfo is not samplesList[0]: 
                        histo.Add(res.Get("bjetenls/bjetenls_"+sampleInfo).Clone());
 
-           #Calculate the energy peak position in the big MC sample
+           # Create the output directory
+           if not os.path.isdir(opt.inDir):
+               os.mkdir(opt.inDir)
+
+           # Calculate the energy peak position in the big MC sample
            Eb,DEb = gPeak(h=histo,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
            print "<E_{b}> = (%3.2f #pm %3.2f) GeV" % (Eb,DEb)
 
