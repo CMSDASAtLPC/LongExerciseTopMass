@@ -1,5 +1,5 @@
 # MtopFromEbPeak
-This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2017](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchool2017TopExercise).
+This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2017](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolLPC2017TopExercise) where you will find the most recent version of the instructions below.
 The objective is not only to extract the top-quark mass by measuring the peak position of the energy of b-tagged jets in the laboratory frame, but also to get more familiar with high-energy physics analyses, making use of Python, C and Root. 
 
 ## Installation
