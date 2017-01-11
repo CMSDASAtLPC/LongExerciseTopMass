@@ -75,7 +75,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             #get the kinematics and select the lepton                                                                
             lp4=ROOT.TLorentzVector()
             lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],0)
-            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.5 : continue
+            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.4 : continue
 
             #count selected jet                                                                                   
             nLeptons +=1
