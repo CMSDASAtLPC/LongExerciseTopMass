@@ -21,6 +21,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'nleptons':ROOT.TH1F('nleptons',';Lepton multiplicity; Events',5,0,5),
         'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
         'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.,),
+        'bmjeteta':ROOT.TH1F('bmjeteta',';#eta(b matched jet); Events',24,-2.4,2.4),
         'lep0pt':ROOT.TH1F('lep0pt',';Leading Lepton Transverse Momentum; Events',25,0,250),
         'lep1pt':ROOT.TH1F('lep1pt',';Subleading Lepton Transverse Momentum; Events',20,0,200),
         'bjeteta':ROOT.TH1F('bjeteta',';#eta; Jets',50,-3,3),
@@ -48,6 +49,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         nLeptons = 0
         taggedJetsP4=[]
         leptonsP4=[]
+        matchedJetsP4=[]
         for ij in xrange(0,tree.nJet):
 
             #get the kinematics and select the jet
@@ -62,6 +64,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             if tree.Jet_CombIVF[ij]>0.890:
                 nBtags+=1
                 taggedJetsP4.append(jp4)
+                if abs(tree.Jet_flavour[ij]) == 5:
+                    matchedJetsP4.append(jp4)
         
         if nJets<2 : continue
 
@@ -70,7 +74,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             #get the kinematics and select the lepton                                                                
             lp4=ROOT.TLorentzVector()
             lp4.SetPtEtaPhiM(tree.Lepton_pt[j],tree.Lepton_eta[j],tree.Lepton_phi[j],0)
-            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.5 : continue
+            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.4 : continue
 
             #count selected jet                                                                                   
             nLeptons +=1
@@ -96,13 +100,17 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
             histos['bjeteta'].Fill(taggedJetsP4[ij].Eta(),evWgt)
-            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
-        
+        for ij in xrange(0,len(matchedJetsP4)):
+            histos['bmjeteta'].Fill(matchedJetsP4[ij].Eta(),evWgt)
         for j in xrange(0,len(leptonsP4)):
             if j>1 : break
-            histos['lep0pt'].Fill(leptonsP4[j].Pt(),evWgt)
-            histos['lep1pt'].Fill(leptonsP4[j].Pt(),evWgt)
-
+            if tree.Lepton_pt[0] > tree.Lepton_pt[1]:
+                histos['lep0pt'].Fill(tree.Lepton_pt[0],evWgt)
+                histos['lep1pt'].Fill(tree.Lepton_pt[1],evWgt)
+            else:
+                histos['lep0pt'].Fill(tree.Lepton_pt[1],evWgt)
+                histos['lep1pt'].Fill(tree.Lepton_pt[0],evWgt)
+              
         for ij in xrange(0,tree.nLepton):
             lid=abs(tree.Lepton_id[ij])
             if lid!=11 and lid!=13: continue
