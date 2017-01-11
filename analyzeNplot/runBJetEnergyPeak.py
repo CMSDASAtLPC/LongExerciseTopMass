@@ -78,6 +78,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
             leptonsP4.append(lp4)
 
+        if nLeptons<2 : continue
+
         #generator level weight only for MC
         evWgt=1.0
         if xsec              : evWgt  = xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]
