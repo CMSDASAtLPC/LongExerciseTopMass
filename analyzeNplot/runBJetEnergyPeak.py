@@ -61,20 +61,21 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             nJets +=1
 
             #save P4 for b-tagged jet
-            if tree.Jet_CombIVF[ij]>0.890:
+            if tree.Jet_CombIVF[ij]>0.890: # medium cut, vs. 0.970 tight cut
                 nBtags+=1
                 taggedJetsP4.append(jp4)
                 if abs(tree.Jet_flavour[ij]) == 5:
                     matchedJetsP4.append(jp4)
-        
-        if nJets<2 : continue
 
-        for j in xrange(0,tree.nLepton):
+        if nJets<2 : continue
+        if nBtags!=1 and nBtags!=2 : continue
+
+        for ij in xrange(0,tree.nLepton):
 
             #get the kinematics and select the lepton                                                                
             lp4=ROOT.TLorentzVector()
-            lp4.SetPtEtaPhiM(tree.Lepton_pt[j],tree.Lepton_eta[j],tree.Lepton_phi[j],0)
-            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.4 : continue
+            lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],0)
+            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.5 : continue
 
             #count selected jet                                                                                   
             nLeptons +=1
@@ -83,8 +84,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         if nLeptons<2 : continue
 
-            #save P4 for b-tagged jet                                                                         
-        
         #generator level weight only for MC
         evWgt=1.0
         if xsec              : evWgt  = xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]
@@ -93,13 +92,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #ready to fill the histograms
         histos['nvtx'].Fill(tree.nPV,evWgt)
         histos['nbtags'].Fill(nBtags,evWgt)
+        histos['metpt'].Fill(tree.MET_pt,evWgt)
 
+        #save P4 for b-tagged jet
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
             histos['bjeteta'].Fill(taggedJetsP4[ij].Eta(),evWgt)
+
         for ij in xrange(0,len(matchedJetsP4)):
             histos['bmjeteta'].Fill(matchedJetsP4[ij].Eta(),evWgt)
         for j in xrange(0,len(leptonsP4)):
@@ -111,20 +113,18 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 histos['lep0pt'].Fill(tree.Lepton_pt[1],evWgt)
                 histos['lep1pt'].Fill(tree.Lepton_pt[0],evWgt)
               
-        for ij in xrange(0,tree.nLepton):
             lid=abs(tree.Lepton_id[ij])
-            if lid!=11 and lid!=13: continue
+            if lid!=11 and lid!=13:
+                raise Exception("Wrong lepton id!")
+
+            histos['lep0pt'].Fill(leptonsP4[ij].Pt(),evWgt)
+            histos['lep1pt'].Fill(leptonsP4[ij].Pt(),evWgt)
 
             #hard-coded masses for electrons and muons
             lmass=0.00051 if lid==11 else 0.106
-            lp4=ROOT.TLorentzVector()
-            lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],lmass)
             ltag='el' if lid==11 else 'mu'
-            histos[ltag+'pt'].Fill(lp4.Perp(),evWgt)
-            histos[ltag+'eta'].Fill(lp4.Eta(),evWgt)   
- #all done with this file
- 
-        histos['metpt'].Fill(tree.MET_pt,evWgt)
+            histos[ltag+'pt'].Fill(leptonsP4[ij].Perp(),evWgt)
+            histos[ltag+'eta'].Fill(leptonsP4[ij].Eta(),evWgt)
 
     fIn.Close()
 
