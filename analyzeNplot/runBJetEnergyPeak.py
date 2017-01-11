@@ -18,8 +18,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     histos={ 
         'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
         'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
+        'nleptons':ROOT.TH1F('nleptons',';Lepton multiplicity; Events',5,0,5),
         'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
-        'bjetpt':ROOT.TH1F('bjetpt',';Energy [GeV]; Jets',30,0,300),
+        'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.,),
+        'lep0pt':ROOT.TH1F('lep0pt',';Leading Lepton Transverse Momentum; Events',25,0,250),
+        'lep1pt':ROOT.TH1F('lep1pt',';Subleading Lepton Transverse Momentum; Events',20,0,200),
         'bjeteta':ROOT.TH1F('bjeteta',';#eta; Jets',50,-3,3),
         'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'metpt':ROOT.TH1F('metpt',';MET [GeV]; Jets',55,0.,1100.),
@@ -42,13 +45,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         if i%100==0 : sys.stdout.write('\r [ %d/100 ] done' %(int(float(100.*i)/float(totalEntries))) )
         #require at least two jets
         nJets, nBtags = 0, 0
+        nLeptons = 0
         taggedJetsP4=[]
+        leptonsP4=[]
         for ij in xrange(0,tree.nJet):
 
             #get the kinematics and select the jet
             jp4=ROOT.TLorentzVector()
             jp4.SetPtEtaPhiM(tree.Jet_pt[ij],tree.Jet_eta[ij],tree.Jet_phi[ij],tree.Jet_mass[ij])
-            if jp4.Perp()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
+            if jp4.Pt()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
 
             #count selected jet
             nJets +=1
@@ -60,6 +65,22 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         
         if nJets<2 : continue
 
+        for j in xrange(0,tree.nLepton):
+
+            #get the kinematics and select the lepton                                                                
+            lp4=ROOT.TLorentzVector()
+            lp4.SetPtEtaPhiM(tree.Lepton_pt[j],tree.Lepton_eta[j],tree.Lepton_phi[j],0)
+            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.5 : continue
+
+            #count selected jet                                                                                   
+            nLeptons +=1
+
+            leptonsP4.append(lp4)
+
+        if nLeptons<2 : continue
+
+            #save P4 for b-tagged jet                                                                         
+        
         #generator level weight only for MC
         evWgt=1.0
         if xsec              : evWgt  = xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]
@@ -73,11 +94,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
-            histos['bjetpt'].Fill(taggedJetsP4[ij].Perp(),evWgt)
+            histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
             histos['bjeteta'].Fill(taggedJetsP4[ij].Eta(),evWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+        
+        for j in xrange(0,len(leptonsP4)):
+            if j>1 : break
+            histos['lep0pt'].Fill(leptonsP4[j].Pt(),evWgt)
+            histos['lep1pt'].Fill(leptonsP4[j].Pt(),evWgt)
 
-        #loop over the leptons
         for ij in xrange(0,tree.nLepton):
             lid=abs(tree.Lepton_id[ij])
             if lid!=11 and lid!=13: continue
@@ -88,11 +113,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],lmass)
             ltag='el' if lid==11 else 'mu'
             histos[ltag+'pt'].Fill(lp4.Perp(),evWgt)
-            histos[ltag+'eta'].Fill(lp4.Eta(),evWgt)
-
+            histos[ltag+'eta'].Fill(lp4.Eta(),evWgt)   
+ #all done with this file
+ 
         histos['metpt'].Fill(tree.MET_pt,evWgt)
-        
-    #all done with this file
+
     fIn.Close()
 
     #save histograms to file
