@@ -19,7 +19,14 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
         'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
         'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
-        'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.,)
+        'bjetpt':ROOT.TH1F('bjetpt',';Energy [GeV]; Jets',30,0,300),
+        'bjeteta':ROOT.TH1F('bjeteta',';#eta; Jets',50,-3,3),
+        'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'metpt':ROOT.TH1F('metpt',';MET [GeV]; Jets',55,0.,1100.),
+        'elpt':ROOT.TH1F('elpt',';electron pt [GeV]; electrons',40,0.,400.),
+        'eleta':ROOT.TH1F('eleta',';#eta; electrons',50,-3,3),
+        'mupt':ROOT.TH1F('mupt',';muon pt [GeV]; muons',40,0.,400.),
+        'mueta':ROOT.TH1F('mueta',';#eta; muons',50,-3,3)
         }
     for key in histos:
         histos[key].Sumw2()
@@ -41,7 +48,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             #get the kinematics and select the jet
             jp4=ROOT.TLorentzVector()
             jp4.SetPtEtaPhiM(tree.Jet_pt[ij],tree.Jet_eta[ij],tree.Jet_phi[ij],tree.Jet_mass[ij])
-            if jp4.Pt()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
+            if jp4.Perp()<30 or ROOT.TMath.Abs(jp4.Eta())>2.4 : continue
 
             #count selected jet
             nJets +=1
@@ -66,7 +73,22 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
+            histos['bjetpt'].Fill(taggedJetsP4[ij].Perp(),evWgt)
+            histos['bjeteta'].Fill(taggedJetsP4[ij].Eta(),evWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+
+        #loop over the leptons
+        for ij in xrange(0,tree.nLepton):
+            lid=abs(tree.Lepton_id[ij])
+            if lid!=11 and lid!=13: continue
+
+            #hard-coded masses for electrons and muons
+            lmass=0.00051 if lid==11 else 0.106
+            lp4=ROOT.TLorentzVector()
+            lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],lmass)
+            ltag='el' if lid==11 else 'mu'
+            histos[ltag+'pt'].Fill(lp4.Perp(),evWgt)
+            histos[ltag+'eta'].Fill(lp4.Eta(),evWgt)
         
     #all done with this file
     fIn.Close()
