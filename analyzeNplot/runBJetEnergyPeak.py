@@ -59,7 +59,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             nJets +=1
 
             #save P4 for b-tagged jet
-            if tree.Jet_CombIVF[ij]>0.605:
+            if tree.Jet_CombIVF[ij]>0.890:
                 nBtags+=1
                 taggedJetsP4.append(jp4)
         
