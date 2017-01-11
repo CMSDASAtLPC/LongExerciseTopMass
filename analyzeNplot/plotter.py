@@ -17,7 +17,7 @@ class Plot(object):
         self.dataH = None
         self.data = None
         self._garbageList = []
-        self.plotformats = ['pdf','png']
+        self.plotformats = ['pdf','png','C']
         self.savelog = False
         self.ratiorange = (0.46,1.54)
 
