@@ -89,6 +89,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             ltag='el' if lid==11 else 'mu'
             histos[ltag+'pt'].Fill(lp4.Perp(),evWgt)
             histos[ltag+'eta'].Fill(lp4.Eta(),evWgt)
+
+        histos['metpt'].Fill(tree.MET_pt,evWgt)
         
     #all done with this file
     fIn.Close()
