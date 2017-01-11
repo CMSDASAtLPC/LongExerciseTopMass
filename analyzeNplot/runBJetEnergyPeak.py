@@ -66,7 +66,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 taggedJetsP4.append(jp4)
                 if abs(tree.Jet_flavour[ij]) == 5:
                     matchedJetsP4.append(jp4)
-
+        
         if nJets<2 : continue
         if nBtags!=1 and nBtags!=2 : continue
 
@@ -104,15 +104,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         for ij in xrange(0,len(matchedJetsP4)):
             histos['bmjeteta'].Fill(matchedJetsP4[ij].Eta(),evWgt)
-        for j in xrange(0,len(leptonsP4)):
-            if j>1 : break
-            if tree.Lepton_pt[0] > tree.Lepton_pt[1]:
-                histos['lep0pt'].Fill(tree.Lepton_pt[0],evWgt)
-                histos['lep1pt'].Fill(tree.Lepton_pt[1],evWgt)
-            else:
-                histos['lep0pt'].Fill(tree.Lepton_pt[1],evWgt)
-                histos['lep1pt'].Fill(tree.Lepton_pt[0],evWgt)
-              
+        for ij in xrange(0,len(leptonsP4)):
+            if ij>1 : break
             lid=abs(tree.Lepton_id[ij])
             if lid!=11 and lid!=13:
                 raise Exception("Wrong lepton id!")
