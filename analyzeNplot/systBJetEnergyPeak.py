@@ -15,7 +15,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
     
-    flag = 0
     #book some histograms
     histos={ 
         # nominal (for xcheck)
@@ -152,6 +151,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
             #require at least two jets
             nJets, nBtags = 0, 0
+            taggedJetsP4=[]
             taggedJetsP4_up=[]
             taggedJetsP4_down=[]
             matchedJetsP4=[]
@@ -173,6 +173,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 #save P4 for b-tagged jet
                 if tree.Jet_CombIVF[ij]>0.890: # medium cut, vs. 0.970 tight cut
                     nBtags+=1
+                    taggedJetsP4.append(jp4)
                     taggedJetsP4_up.append(jp4*w_jec_up)
                     taggedJetsP4_down.append(jp4*w_jec_down)
                     if abs(tree.Jet_flavour[ij]) == 5:
@@ -181,12 +182,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 if nJets<2 : continue
                 if nBtags!=1 and nBtags!=2 : continue
        
-                for ij in xrange(0,len(taggedJetsP4_up)):
+                for ij in xrange(0,len(taggedJetsP4)):
                     if ij>1 : break
-                    histos['bjetenls_jec_'+str((iJEC+1)/2)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
-                    histos['bjetenls_jec_'+str((iJEC+1)/2)+'_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E())
-                    # if iJEC % 2 == 0: print (iJEC+1)/2, "_up", taggedJetsP4[ij].E()
-                    # else : print (iJEC+1)/2, "_down", taggedJetsP4[ij].E()
+                    histos['bjetenls_jec_'+str(iJEC)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
+                    histos['bjetenls_jec_'+str(iJEC)+'_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E()
+                                                                         )
 
                 
         #save P4 for b-tagged jet
