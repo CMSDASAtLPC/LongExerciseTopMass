@@ -1,6 +1,6 @@
 {
 
-"MC13TeV_TTJets"  : [ 
+"MC13TeV_TTJets_m175v5"  : [ 
 		 831.76, 
 		 0, 
 		 "/TT_TuneCUETP8M1_mtop1755_13TeV-powheg-pythia8/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
@@ -56,7 +56,7 @@
 		858
 ],
 
-"MC13TeV_SingleTbar_tW" : [
+"MC13TeV_tW_m175v5" : [
 			35.85,      
 			0, 
 			"/ST_tW_antitop_5f_mtop1755_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
@@ -64,7 +64,7 @@
 			618
 ],
 
-"MC13TeV_SingleT_tW" : [
+"MC13TeV_tW_m175v5" : [
 		     35.85,
 		     0, 
 		     "/ST_tW_top_5f_mtop1755_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15MiniAODv2-74X_mcRun2_asymptotic_v2-v1/MINIAODSIM", 
