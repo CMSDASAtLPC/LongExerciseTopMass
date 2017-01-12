@@ -45,7 +45,7 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     fitfunc.SetLineStyle(1)
 
     # Do the fit
-    hFit.Fit("Gaussian fit","EM", "", minToFit, maxToFit) 
+    hFit.Fit("Gaussian fit","EMQ", "", minToFit, maxToFit) 
     # "E" stands for Minos, "M" for improving fit results
     # cf. ftp://root.cern.ch/root/doc/5FittingHistograms.pdf    
 
