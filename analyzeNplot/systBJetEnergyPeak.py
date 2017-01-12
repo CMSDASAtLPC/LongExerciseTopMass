@@ -91,12 +91,12 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jec_29_up,':ROOT.TH1F('bjetenls_jec_29_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_29_down':ROOT.TH1F('bjetenls_jec_29_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-        'bjetenls_lep,_up,':ROOT.TH1F('bjetenls_lep,_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_lep,_down':ROOT.TH1F('bjetenls_lep,_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_PU,_up,':ROOT.TH1F('bjetenls_PU,_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_PU,_down':ROOT.TH1F('bjetenls_PU,_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT,_up,':ROOT.TH1F('bjetenls_toppT,_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT,_down':ROOT.TH1F('bjetenls_toppT,_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_lep_up,':ROOT.TH1F('bjetenls_lep_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_lep_down':ROOT.TH1F('bjetenls_lep_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_PU_up,':ROOT.TH1F('bjetenls_PU_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_PU_down':ROOT.TH1F('bjetenls_PU_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_toppT_up,':ROOT.TH1F('bjetenls_toppT_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_toppT_down':ROOT.TH1F('bjetenls_toppT_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_norm_up,':ROOT.TH1F('bjetenls_norm_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
@@ -154,9 +154,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         if nLeptons<2 : continue
 
+       
         #generator level weight only for MC
         evWgt=1.0
-        if xsec              : evWgt  = xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]
+        if xsec              : 
+            evWgt  = [xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[1]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[2]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[1],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[2],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
         if tree.nGenWeight>0 : evWgt *= tree.GenWeights[0]
 
         #ready to fill the histograms
