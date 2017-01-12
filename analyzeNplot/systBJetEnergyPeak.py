@@ -14,7 +14,8 @@ Perform the analysis on a single file
 def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
-
+    
+    flag = 0
     #book some histograms
     histos={ 
         # nominal (for xcheck)
@@ -89,16 +90,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jec_27_down':ROOT.TH1F('bjetenls_jec_27_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_28_up':ROOT.TH1F('bjetenls_jec_28_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_28_down':ROOT.TH1F('bjetenls_jec_28_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        # 'bjetenls_jec_29_up,':ROOT.TH1F('bjetenls_jec_29_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        # 'bjetenls_jec_29_down':ROOT.TH1F('bjetenls_jec_29_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_29_up':ROOT.TH1F('bjetenls_jec_29_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_29_down':ROOT.TH1F('bjetenls_jec_29_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-        'bjetenls_lep_up,':ROOT.TH1F('bjetenls_lep_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_lep_up':ROOT.TH1F('bjetenls_lep_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_lep_down':ROOT.TH1F('bjetenls_lep_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_PU_up,':ROOT.TH1F('bjetenls_PU_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_PU_up':ROOT.TH1F('bjetenls_PU_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_PU_down':ROOT.TH1F('bjetenls_PU_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT_up,':ROOT.TH1F('bjetenls_toppT_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT_down':ROOT.TH1F('bjetenls_toppT_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-#        'bjetenls_norm_up,':ROOT.TH1F('bjetenls_norm_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_toppT':ROOT.TH1F('bjetenls_toppT',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+#        'bjetenls_norm_up':ROOT.TH1F('bjetenls_norm_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 #        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
 
@@ -119,15 +119,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #generator level weight only for MC                                   
         evWgt=[]
         if xsec              :
-            evWgt  = [1.0,
-                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0],
+            evWgt  = [xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0],
                       xsec*tree.LepSelEffWeights[1]*tree.PUWeights[0],
                       xsec*tree.LepSelEffWeights[2]*tree.PUWeights[0],
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[1],
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[2],
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
+        else:
+            evWgt = [1.0,1.0,1.0,1.0,1.0,1.0]
         if tree.nGenWeight>0 :
-            for i in range(len(evWgt)):
+            for i in range(0,len(evWgt)):
                 evWgt[i] *= tree.GenWeights[0]
 
         nLeptons = 0
@@ -180,7 +181,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 if nJets<2 : continue
                 if nBtags!=1 and nBtags!=2 : continue
        
-
                 for ij in xrange(0,len(taggedJetsP4_up)):
                     if ij>1 : break
                     histos['bjetenls_jec_'+str((iJEC+1)/2)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
@@ -189,7 +189,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                     # else : print (iJEC+1)/2, "_down", taggedJetsP4[ij].E()
 
                 
-  
+        #save P4 for b-tagged jet
+        #use up to two leading b-tagged jets
+        for ij in xrange(0,len(taggedJetsP4)):
+            if ij>1 : break
+            histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+            histos['bjetenls_lep_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[1]/taggedJetsP4[ij].E())     
+            histos['bjetenls_lep_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[2]/taggedJetsP4[ij].E())
+            histos['bjetenls_PU_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[3]/taggedJetsP4[ij].E()) 
+            histos['bjetenls_PU_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E())
+            histos['bjetenls_toppT'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[5]/taggedJetsP4[ij].E())
 
     fIn.Close()
 
