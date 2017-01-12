@@ -10,7 +10,7 @@ from subprocess import Popen, PIPE
 """
 Perform the analysis on a single file
 """
-def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
+OBdef runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
 
@@ -97,8 +97,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_PU_down':ROOT.TH1F('bjetenls_PU_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_toppT_up,':ROOT.TH1F('bjetenls_toppT_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_toppT_down':ROOT.TH1F('bjetenls_toppT_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_norm_up,':ROOT.TH1F('bjetenls_norm_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+#        'bjetenls_norm_up,':ROOT.TH1F('bjetenls_norm_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+#        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
 
         }
@@ -114,6 +114,20 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         tree.GetEntry(i)
         if i%100==0 : sys.stdout.write('\r [ %d/100 ] done' %(int(float(100.*i)/float(totalEntries))) )
+
+        #generator level weight only for MC                                   
+        evWgt=[]
+        if xsec              :
+            evWgt  = [1.0,
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[1]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[2]*tree.PUWeights[0],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[1],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[2],
+                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
+        if tree.nGenWeight>0 :
+            for i in len(evWgt):
+                evWgt[i] *= tree.GenWeights[0]
 
         nLeptons = 0
         leptonsP4=[]
@@ -156,24 +170,13 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         if nJets<2 : continue
         if nBtags!=1 and nBtags!=2 : continue
        
-        #generator level weight only for MC
-        evWgt=1.0
-        if xsec              : 
-            evWgt  = [xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0],
-                      xsec*tree.LepSelEffWeights[1]*tree.PUWeights[0],
-                      xsec*tree.LepSelEffWeights[2]*tree.PUWeights[0],
-                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[1],
-                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[2],
-                      xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
-        if tree.nGenWeight>0 : evWgt *= tree.GenWeights[0]
-
         #ready to fill the histograms
 
         #save P4 for b-tagged jet
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
-            histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
 
 
     fIn.Close()
