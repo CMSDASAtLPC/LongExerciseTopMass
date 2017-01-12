@@ -1,0 +1,34 @@
+Mean = p1 VALUE
+sigma = p2 VALUE
+
+Nominal
+<E_{b}> = (64.89 #pm 0.59) GeV
+  EXT PARAMETER                                   
+  NO.   NAME      VALUE            ERROR     
+   1  p0           1.97149e+01   2.18845e-01
+   2  p1           4.17268e+00   9.16164e-03
+   3  p2           5.89792e-01   1.58798e-02
+
+Plot: fit_MC_nom.png
+
+
+m_169v5
+<E_{b}> = (64.89 #pm 0.59) GeV
+  EXT PARAMETER                                
+  NO.   NAME      VALUE            ERROR     
+   1  p0           1.97149e+01   2.18845e-01
+   2  p1           4.17268e+00   9.16164e-03
+   3  p2           5.89792e-01   1.58798e-02
+
+Plot: fit_MC_169v5.png
+
+
+m_175v5
+<E_{b}> = (67.09 #pm 0.64) GeV
+  EXT PARAMETER                            
+  NO.   NAME      VALUE            ERROR     
+   1  p0           2.03267e+01   2.27892e-01
+   2  p1           4.20609e+00   9.58970e-03
+   3  p2           6.13906e-01   1.82398e-02
+
+Plot: fit_MC_175v5
