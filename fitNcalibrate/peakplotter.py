@@ -25,12 +25,6 @@ gfit = TF1("f","[0] + [1] * x")
 graph.Fit(gfit)
 graph.Draw("AP")
 
-stats = gPad.GetPrimitive("stats")
-gPad.Update()
-stats.__class__ = ROOT.TPaveStats
-stats.SetY1NDC(0.2)
-stats.SetY2NDC(0.4)
-
 ideal = TGraph(len(theor),theor,theor)
 ideal.SetLineColor(4)
 ideal.SetLineStyle(7)
@@ -56,6 +50,14 @@ leg.AddEntry(gfit,"Fit","l")
 leg.Draw("SAME")
 
 tdrstyle.setTDRStyle()
+
+gPad.Update()
+stats = gPad.GetPrimitive("stats")
+stats.__class__ = ROOT.TPaveStats
+stats.SetY1NDC(0.1)
+stats.SetY2NDC(0.4)
+stats.SetX1NDC(0.6)
+stats.SetX2NDC(0.9)
 
 # Save the plot
 c1.SaveAs("calibration.pdf")
