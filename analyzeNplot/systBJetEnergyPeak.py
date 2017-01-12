@@ -10,10 +10,11 @@ from subprocess import Popen, PIPE
 """
 Perform the analysis on a single file
 """
-OBdef runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
+def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
-
+    
+    flag = 0
     #book some histograms
     histos={ 
         # nominal (for xcheck)
@@ -24,80 +25,79 @@ OBdef runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jer_down':ROOT.TH1F('bjetenls_jer_down',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: uncorrelated group
-        'bjetenls_jec_1_up,':ROOT.TH1F('bjetenls_jec_1_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_1_up':ROOT.TH1F('bjetenls_jec_1_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_1_down':ROOT.TH1F('bjetenls_jec_1_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_2_up,':ROOT.TH1F('bjetenls_jec_2_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_2_up':ROOT.TH1F('bjetenls_jec_2_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_2_down':ROOT.TH1F('bjetenls_jec_2_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_3_up,':ROOT.TH1F('bjetenls_jec_3_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_3_up':ROOT.TH1F('bjetenls_jec_3_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_3_down':ROOT.TH1F('bjetenls_jec_3_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_5_up,':ROOT.TH1F('bjetenls_jec_5_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_5_up':ROOT.TH1F('bjetenls_jec_5_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_5_down':ROOT.TH1F('bjetenls_jec_5_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_6_up,':ROOT.TH1F('bjetenls_jec_6_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_6_up':ROOT.TH1F('bjetenls_jec_6_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_6_down':ROOT.TH1F('bjetenls_jec_6_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_7_up,':ROOT.TH1F('bjetenls_jec_7_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_7_up':ROOT.TH1F('bjetenls_jec_7_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_7_down':ROOT.TH1F('bjetenls_jec_7_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_8_up,':ROOT.TH1F('bjetenls_jec_8_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_8_up':ROOT.TH1F('bjetenls_jec_8_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_8_down':ROOT.TH1F('bjetenls_jec_8_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_9_up,':ROOT.TH1F('bjetenls_jec_9_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_9_up':ROOT.TH1F('bjetenls_jec_9_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_9_down':ROOT.TH1F('bjetenls_jec_9_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_10_up,':ROOT.TH1F('bjetenls_jec_10_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_10_up':ROOT.TH1F('bjetenls_jec_10_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_10_down':ROOT.TH1F('bjetenls_jec_10_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_11_up,':ROOT.TH1F('bjetenls_jec_11_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_11_up':ROOT.TH1F('bjetenls_jec_11_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_11_down':ROOT.TH1F('bjetenls_jec_11_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_12_up,':ROOT.TH1F('bjetenls_jec_12_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_12_up':ROOT.TH1F('bjetenls_jec_12_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_12_down':ROOT.TH1F('bjetenls_jec_12_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_13_up,':ROOT.TH1F('bjetenls_jec_13_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_13_up':ROOT.TH1F('bjetenls_jec_13_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_13_down':ROOT.TH1F('bjetenls_jec_13_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_14_up,':ROOT.TH1F('bjetenls_jec_14_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_14_up':ROOT.TH1F('bjetenls_jec_14_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_14_down':ROOT.TH1F('bjetenls_jec_14_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_15_up,':ROOT.TH1F('bjetenls_jec_15_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_15_up':ROOT.TH1F('bjetenls_jec_15_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_15_down':ROOT.TH1F('bjetenls_jec_15_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_16_up,':ROOT.TH1F('bjetenls_jec_16_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_16_up':ROOT.TH1F('bjetenls_jec_16_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_16_down':ROOT.TH1F('bjetenls_jec_16_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_18_up,':ROOT.TH1F('bjetenls_jec_18_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_18_up':ROOT.TH1F('bjetenls_jec_18_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_18_down':ROOT.TH1F('bjetenls_jec_18_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_19_up,':ROOT.TH1F('bjetenls_jec_19_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_19_up':ROOT.TH1F('bjetenls_jec_19_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_19_down':ROOT.TH1F('bjetenls_jec_19_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: in-situ correlation group
-        'bjetenls_jec_4_up,':ROOT.TH1F('bjetenls_jec_4_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_4_up':ROOT.TH1F('bjetenls_jec_4_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_4_down':ROOT.TH1F('bjetenls_jec_4_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: inter-calibration
-        'bjetenls_jec_17_up,':ROOT.TH1F('bjetenls_jec_17_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_17_up':ROOT.TH1F('bjetenls_jec_17_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_17_down':ROOT.TH1F('bjetenls_jec_17_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: pile-up
-        'bjetenls_jec_20_up,':ROOT.TH1F('bjetenls_jec_20_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_20_up':ROOT.TH1F('bjetenls_jec_20_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_20_down':ROOT.TH1F('bjetenls_jec_20_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_21_up,':ROOT.TH1F('bjetenls_jec_21_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_21_up':ROOT.TH1F('bjetenls_jec_21_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_21_down':ROOT.TH1F('bjetenls_jec_21_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_22_up,':ROOT.TH1F('bjetenls_jec_22_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_22_up':ROOT.TH1F('bjetenls_jec_22_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_22_down':ROOT.TH1F('bjetenls_jec_22_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_23_up,':ROOT.TH1F('bjetenls_jec_23_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_23_up':ROOT.TH1F('bjetenls_jec_23_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_23_down':ROOT.TH1F('bjetenls_jec_23_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_24_up,':ROOT.TH1F('bjetenls_jec_24_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_24_up':ROOT.TH1F('bjetenls_jec_24_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_24_down':ROOT.TH1F('bjetenls_jec_24_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_25_up,':ROOT.TH1F('bjetenls_jec_25_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_25_up':ROOT.TH1F('bjetenls_jec_25_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_25_down':ROOT.TH1F('bjetenls_jec_25_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JEC: flavour
-        'bjetenls_jec_26_up,':ROOT.TH1F('bjetenls_jec_26_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_26_up':ROOT.TH1F('bjetenls_jec_26_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_26_down':ROOT.TH1F('bjetenls_jec_26_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_27_up,':ROOT.TH1F('bjetenls_jec_27_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_27_up':ROOT.TH1F('bjetenls_jec_27_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_27_down':ROOT.TH1F('bjetenls_jec_27_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_28_up,':ROOT.TH1F('bjetenls_jec_28_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_28_up':ROOT.TH1F('bjetenls_jec_28_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_28_down':ROOT.TH1F('bjetenls_jec_28_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_29_up,':ROOT.TH1F('bjetenls_jec_29_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_jec_29_up':ROOT.TH1F('bjetenls_jec_29_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_29_down':ROOT.TH1F('bjetenls_jec_29_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-        'bjetenls_lep_up,':ROOT.TH1F('bjetenls_lep_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_lep_up':ROOT.TH1F('bjetenls_lep_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_lep_down':ROOT.TH1F('bjetenls_lep_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_PU_up,':ROOT.TH1F('bjetenls_PU_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_PU_up':ROOT.TH1F('bjetenls_PU_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_PU_down':ROOT.TH1F('bjetenls_PU_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT_up,':ROOT.TH1F('bjetenls_toppT_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_toppT_down':ROOT.TH1F('bjetenls_toppT_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-#        'bjetenls_norm_up,':ROOT.TH1F('bjetenls_norm_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_toppT':ROOT.TH1F('bjetenls_toppT',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+#        'bjetenls_norm_up':ROOT.TH1F('bjetenls_norm_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 #        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
 
@@ -125,8 +125,11 @@ OBdef runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[1],
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[2],
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
+            flag = 1
+        else:
+            evWgt = [1.0]
         if tree.nGenWeight>0 :
-            for i in len(evWgt):
+            for i in range(0,len(evWgt)):
                 evWgt[i] *= tree.GenWeights[0]
 
         nLeptons = 0
@@ -176,8 +179,20 @@ OBdef runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
-            histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
-
+            if flag == 1:
+                histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[1]/taggedJetsP4[ij].E())
+                histos['bjetenls_lep_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[2]/taggedJetsP4[ij].E())     
+                histos['bjetenls_lep_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[3]/taggedJetsP4[ij].E())
+                histos['bjetenls_PU_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E()) 
+                histos['bjetenls_PU_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[5]/taggedJetsP4[ij].E())
+                histos['bjetenls_toppT'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[6]/taggedJetsP4[ij].E())
+            else:
+                histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos['bjetenls_lep_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos['bjetenls_lep_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos['bjetenls_PU_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos['bjetenls_PU_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos['bjetenls_toppT'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
 
     fIn.Close()
 
