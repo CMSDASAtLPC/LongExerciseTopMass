@@ -81,7 +81,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jec_25_up,':ROOT.TH1F('bjetenls_jec_25_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_25_down':ROOT.TH1F('bjetenls_jec_25_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-        #
+        # JEC: flavour
         'bjetenls_jec_26_up,':ROOT.TH1F('bjetenls_jec_26_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_26_down':ROOT.TH1F('bjetenls_jec_26_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_27_up,':ROOT.TH1F('bjetenls_jec_27_up,',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
@@ -114,11 +114,27 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         tree.GetEntry(i)
         if i%100==0 : sys.stdout.write('\r [ %d/100 ] done' %(int(float(100.*i)/float(totalEntries))) )
+
+        nLeptons = 0
+        leptonsP4=[]
+
+        for ij in xrange(0,tree.nLepton):
+
+            #get the kinematics and select the lepton                                                                
+            lp4=ROOT.TLorentzVector()
+            lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],0)
+            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.4 : continue
+
+            #count selected jet                                                                                   
+            nLeptons +=1
+
+            leptonsP4.append(lp4)
+
+        if nLeptons<2 : continue
+
         #require at least two jets
         nJets, nBtags = 0, 0
-        nLeptons = 0
         taggedJetsP4=[]
-        leptonsP4=[]
         matchedJetsP4=[]
         for ij in xrange(0,tree.nJet):
 
@@ -139,21 +155,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         
         if nJets<2 : continue
         if nBtags!=1 and nBtags!=2 : continue
-
-        for ij in xrange(0,tree.nLepton):
-
-            #get the kinematics and select the lepton                                                                
-            lp4=ROOT.TLorentzVector()
-            lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],0)
-            if lp4.Pt()<20 or ROOT.TMath.Abs(lp4.Eta())>2.4 : continue
-
-            #count selected jet                                                                                   
-            nLeptons +=1
-
-            leptonsP4.append(lp4)
-
-        if nLeptons<2 : continue
-
        
         #generator level weight only for MC
         evWgt=1.0
