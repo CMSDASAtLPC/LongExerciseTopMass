@@ -20,7 +20,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
         'nleptons':ROOT.TH1F('nleptons',';Lepton multiplicity; Events',5,0,5),
         'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
-        'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.,),
         'bmjeteta':ROOT.TH1F('bmjeteta',';#eta(b matched jet); Events',24,-2.4,2.4),
         'lep0pt':ROOT.TH1F('lep0pt',';Leading Lepton Transverse Momentum; Events',25,0,250),
         'lep1pt':ROOT.TH1F('lep1pt',';Subleading Lepton Transverse Momentum; Events',20,0,200),
