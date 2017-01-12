@@ -2,12 +2,12 @@ Mean = p1 VALUE
 sigma = p2 VALUE
 
 Nominal
-<E_{b}> = (64.89 #pm 0.59) GeV
+<E_{b}> = (66.34 #pm 0.26) GeV
   EXT PARAMETER                                   
   NO.   NAME      VALUE            ERROR     
-   1  p0           1.97149e+01   2.18845e-01
-   2  p1           4.17268e+00   9.16164e-03
-   3  p2           5.89792e-01   1.58798e-02
+   1  p0           1.96683e+01   8.14997e-02 
+   2  p1           4.19472e+00   3.94820e-03
+   3  p2           6.11231e-01   6.82654e-03 
 
 Plot: fit_MC_nom.png
 
