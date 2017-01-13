@@ -145,21 +145,22 @@ def main():
 
     #Generate pseudo-exp
     r3 = TRandom3()
-    r3.SetSeed(1)
-    Npe = 1000
-    heb = TH1F("heb", "", 50,61,68) # 169v5
-    #heb = TH1F("heb", "", 50,63,70) # 172v5
+    r3.SetSeed(0)
+    Npe = 2000
+    #heb = TH1F("heb", "", 50,61,68) # 169v5
+    heb = TH1F("heb", "", 50,63,70) # 172v5
     #heb = TH1F("heb", "", 50,64,70) # 175v5
 
-    hde = TH1F("hde", "", 30,0.09,0.2) # 169v5
-    #hde = TH1F("hde", "", 30,0,0.4) # 172v5
+    #hde = TH1F("hde", "", 30,0.09,0.2) # 169v5
+    hde = TH1F("hde", "", 30,0,0.4) # 172v5
     #hde = TH1F("hde", "", 30,0.08,0.2) # 175v5
 
-    hpull = TH1F("hpull", "",100,-0.3,0.3)
+    hpull = TH1F("hpull", "",50,-30,30)
+    hpullcal = TH1F("hpullcal", "",50,-30,30)
 
-    pred = 65.740336799410 #169v5
-    #pred = 67.570939637681 #172v5
-    #pred = 69.390239814814 #175v5
+    #pred = 65.740 #169v5
+    pred = 67.57 #172v5
+    #pred = 69.39 #175v5
 
     for i in range(0,Npe):
         hpe = histo.Clone()
@@ -174,18 +175,19 @@ def main():
         Eb,DEb = gPeak(h=hpe,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
         heb.Fill(Eb)
         hde.Fill(DEb)
-        Eb = (Eb-16.51)/0.729
-        DEb = (DEb-16.51)/0.729
-        if DEb !=0:
-            pull = (Eb - pred)/float(DEb)
-            #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
-            hpull.Fill(pull)
-        else: 
-            print "WARNING: Infinite pull!"
+        pull=(Eb-pred)/DEb
+        hpull.Fill(pull)
+
+        Ebcal=(Eb-16.51)/0.729
+        DEbcal=DEb/0.729
+        #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
+        pullcal=(Ebcal-pred)/DEbcal
+        hpullcal.Fill(pullcal)
 
     plotter(heb,"Eb.pdf")
     plotter(hde,"Deb.pdf")
-    plotter(hpull,"Pull_corr.pdf")
+    plotter(hpull,"Pull.pdf")
+    plotter(hpullcal,"Pull_corr.pdf")
 
     res.Close()
 
