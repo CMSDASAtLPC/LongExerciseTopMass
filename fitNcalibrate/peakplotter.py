@@ -14,6 +14,7 @@ exper_err=array('d',[0.59,0.26,0.64])
 
 c1 = TCanvas("canvas 1", "c1", 800, 600)
 c1.cd()
+tdrstyle.setTDRStyle()
 
 graph = TGraphErrors(len(exper),theor[1:],exper,theor_err,exper_err)
 graph.SetMarkerColor(4)
@@ -51,8 +52,6 @@ leg.AddEntry(ideal,"Expectation","l")
 leg.AddEntry(gfit,"Fit","l")
 leg.Draw("SAME")
 
-tdrstyle.setTDRStyle()
-
 gPad.Update()
 stats = gPad.GetPrimitive("stats")
 stats.__class__ = ROOT.TPaveStats
@@ -62,5 +61,6 @@ stats.SetX1NDC(0.6)
 stats.SetX2NDC(0.9)
 
 # Save the plot
+tdrstyle.fixOverlay()
 c1.SaveAs("calibration.pdf")
 
