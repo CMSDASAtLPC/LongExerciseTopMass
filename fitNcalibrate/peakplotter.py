@@ -12,6 +12,10 @@ theor_err=array('d',[0.0079,0.0077,0.0076])
 exper_err=array('d',[0.14,0.14,0.135])
 #exper_err=array('d',[0.59,0.26,0.64])
 
+#for i in range(0,len(exper)):
+#    exper[i]=(exper[i]-16.51)/0.729
+#    exper_err[i]=(exper_err[i]-16.52)/0.729
+
 c1 = TCanvas("canvas 1", "c1", 800, 600)
 c1.cd()
 tdrstyle.setTDRStyle()
@@ -61,6 +65,6 @@ stats.SetX1NDC(0.6)
 stats.SetX2NDC(0.9)
 
 # Save the plot
-tdrstyle.fixOverlay()
+gPad.RedrawAxis()
 c1.SaveAs("calibration.pdf")
 
