@@ -1,0 +1,4 @@
+Syst1 (JEC etc.) 1.094
+Syst2 (Fit) 2.164
+Stat (Data peak fit) 0.024
+TMass 173.944
