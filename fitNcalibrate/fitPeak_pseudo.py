@@ -115,6 +115,10 @@ def main():
     hde = TH1F("hde", "", 30,0,0.4) # 169v5
     #hde = TH1F("hde", "", 30,0,0.4) # 172v5
     #hde = TH1F("hde", "", 30,0,0.4) # 175v5
+    hpull = TH1F("hpull", "",200,-30,20)
+    pred = 65.740336799410 #169v5
+    #pred = 67.570939637681 #172v5
+    #pred = 69.390239814814 #175v5
     for i in range(0,Npe):
         hpe = histo.Clone()
         for ibin in range(0,histo.GetNbinsX()):
@@ -128,7 +132,13 @@ def main():
         Eb,DEb = gPeak(h=hpe,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
         heb.Fill(Eb)
         hde.Fill(DEb)
-
+        if DEb !=0:
+            pull = (Eb - pred)/float(DEb)
+            #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
+            hpull.Fill(pull)
+        else: 
+            print "Infinite pull!"
+ 
     gStyle.SetOptFit(0111)
     c1 = TCanvas("c1","")
     heb.Fit("gaus")
@@ -138,6 +148,10 @@ def main():
     hde.Fit("gaus")
     hde.Draw()
     c2.SaveAs("Deb.pdf")
+    c3 = TCanvas("c3","")
+    hpull.Fit("gaus")
+    hpull.Draw()
+    c3.SaveAs("Pull.pdf")
 
     # Create the output directory
     if not os.path.isdir(opt.inDir):
