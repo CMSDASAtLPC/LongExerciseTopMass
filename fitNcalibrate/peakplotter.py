@@ -7,8 +7,10 @@ import tdrstyle
 # Add a zero to the theoretical values to make a nice y=x plot
 theor=array('d',[0.0,65.740336799410,67.570939637681,69.390239814814])
 exper=array('d',[64.89,66.34,67.09])
+#exper=array('d',[64.89,66.34,67.09])
 theor_err=array('d',[0.0079,0.0077,0.0076])
 exper_err=array('d',[0.59,0.26,0.64])
+#exper_err=array('d',[0.59,0.26,0.64])
 
 c1 = TCanvas("canvas 1", "c1", 800, 600)
 c1.cd()
