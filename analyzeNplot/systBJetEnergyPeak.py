@@ -160,7 +160,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         if nLeptons<2 : continue
 
-        for iJEC in range (1,29):
+        for iJEC in range (0,29):
 
             #require at least two jets
             nJets, nBtags = 0, 0
@@ -197,9 +197,12 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
        
                 for ij in xrange(0,len(taggedJetsP4)):
                     if ij>1 : break
-                    histos['bjetenls_jec_'+str(iJEC)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
-                    histos['bjetenls_jec_'+str(iJEC)+'_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E()
-                                                                         )
+                    if iJEC > 0 :
+                        histos['bjetenls_jec_'+str(iJEC)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
+                        histos['bjetenls_jec_'+str(iJEC)+'_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E())
+                    else :
+                        histos['bjetenls_jer_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
+                        histos['bjetenls_jer_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E())
 
                 
         #save P4 for b-tagged jet
