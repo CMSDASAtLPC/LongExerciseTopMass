@@ -109,8 +109,12 @@ def main():
     r3 = TRandom3()
     r3.SetSeed(1)
     Npe = 1000
-    heb = TH1F("heb", "", 50,63,70)
-    hde = TH1F("hde", "", 30,0,0.4)
+    heb = TH1F("heb", "", 50,63,70) # 169v5
+    #heb = TH1F("heb", "", 50,63,70) # 172v5
+    #heb = TH1F("heb", "", 50,63,70) # 175v5
+    hde = TH1F("hde", "", 30,0,0.4) # 169v5
+    #hde = TH1F("hde", "", 30,0,0.4) # 172v5
+    #hde = TH1F("hde", "", 30,0,0.4) # 175v5
     for i in range(0,Npe):
         hpe = histo.Clone()
         for ibin in range(0,histo.GetNbinsX()):
@@ -125,13 +129,15 @@ def main():
         heb.Fill(Eb)
         hde.Fill(DEb)
 
-    #pseudo = new TFile()
+    gStyle.SetOptFit(0111)
     c1 = TCanvas("c1","")
+    heb.Fit("gaus")
     heb.Draw()
-    c1.SaveAs("Eb.png")
+    c1.SaveAs("Eb.pdf")
     c2 = TCanvas("c2","")
+    hde.Fit("gaus")
     hde.Draw()
-    c2.SaveAs("Deb.png")
+    c2.SaveAs("Deb.pdf")
 
     # Create the output directory
     if not os.path.isdir(opt.inDir):
