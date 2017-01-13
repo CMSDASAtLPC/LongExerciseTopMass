@@ -97,8 +97,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_PU_up':ROOT.TH1F('bjetenls_PU_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_PU_down':ROOT.TH1F('bjetenls_PU_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_toppT':ROOT.TH1F('bjetenls_toppT',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-#        'bjetenls_norm_up':ROOT.TH1F('bjetenls_norm_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
-#        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_norm_up':ROOT.TH1F('bjetenls_norm_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
 
         }
@@ -126,6 +126,19 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                       xsec*tree.LepSelEffWeights[0]*tree.PUWeights[0]*tree.TopPtWgt]
         else:
             evWgt = [1.0,1.0,1.0,1.0,1.0,1.0]
+            
+        xsecWgt_up = 1
+        xsecWgt_down = 1
+        if 'SingleT' in inFileURL:
+            xsecWgt_up = 1.25
+            xsecWgt_down = 0.75
+        if 'WJets' in inFileURL:
+            xsecWgt_up = 2
+            xsecWgt_down = 0
+        if 'DY' in inFileURL or 'WZ' in inFileURL or 'ZZ' in inFileURL or 'WZ' in inFileURL:
+            xsecWgt_up = 1.5
+            xsecWgt_down = 0.5
+
         if tree.nGenWeight>0 :
             for i in range(0,len(evWgt)):
                 evWgt[i] *= tree.GenWeights[0]
@@ -199,6 +212,9 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             histos['bjetenls_PU_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[3]/taggedJetsP4[ij].E()) 
             histos['bjetenls_PU_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E())
             histos['bjetenls_toppT'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[5]/taggedJetsP4[ij].E())
+            histos['bjetenls_norm_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),(evWgt[0]*xsecWgt_up)/taggedJetsP4[ij].E())
+            histos['bjetenls_norm_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),(evWgt[0]*xsecWgt_down)/taggedJetsP4[ij].E())
+
 
     fIn.Close()
 
