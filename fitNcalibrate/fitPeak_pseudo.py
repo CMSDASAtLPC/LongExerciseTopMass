@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import math, ROOT, json, optparse, os, sys, pprint
 from ROOT import *
+import tdrstyle
 
 def myFitFunc(x=None,par=None):
     return par[0]*TMath.Gaus(x[0],par[1],par[2],kFALSE)
@@ -64,6 +65,42 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     #all done here ;)
     return Ereco,Err
 
+def plotter(h=None,name=None):
+    c1 = TCanvas("c1","")
+    c1.cd()
+    tdrstyle.setTDRStyle()
+    gROOT.ForceStyle()
+    gROOT.Reset()
+    h.UseCurrentStyle()
+    h.Fit("gaus")
+    h.Draw()
+
+    label1 = TLatex()
+    label1.SetNDC()
+    label1.SetTextFont(60)
+    label1.SetTextSize(0.07)
+    label1.SetTextAlign(31)
+    label1.DrawLatex(0.32, 0.92, "CMS DAS")
+    label2 = TLatex()
+    label2.SetNDC()
+    label2.SetTextFont(42)
+    label2.SetTextSize(0.06)
+    label2.SetTextAlign(11)
+    label2.DrawLatex(0.33, 0.92, "#it{Simulation}")
+
+    gPad.Update()
+    stats = gPad.GetPrimitive("stats")
+    stats.__class__ = ROOT.TPaveStats
+    stats.SetY1NDC(0.6)
+    stats.SetY2NDC(0.9)
+    stats.SetX1NDC(0.6)
+    stats.SetX2NDC(0.9)
+
+    tdrstyle.setTDRStyle()
+    c1.SaveAs(name)
+    c1.Close()
+
+
 def main():
 
     usage = 'usage: %prog [options]'
@@ -109,16 +146,23 @@ def main():
     r3 = TRandom3()
     r3.SetSeed(1)
     Npe = 1000
-    heb = TH1F("heb", "", 50,63,70) # 169v5
+    heb = TH1F("heb", "", 50,61,68) # 169v5
     #heb = TH1F("heb", "", 50,63,70) # 172v5
-    #heb = TH1F("heb", "", 50,63,70) # 175v5
-    hde = TH1F("hde", "", 30,0,0.4) # 169v5
+    #heb = TH1F("heb", "", 50,64,70) # 175v5
+    tdrstyle.setTDRStyle()
+
+    hde = TH1F("hde", "", 30,0.09,0.2) # 169v5
     #hde = TH1F("hde", "", 30,0,0.4) # 172v5
-    #hde = TH1F("hde", "", 30,0,0.4) # 175v5
+    #hde = TH1F("hde", "", 30,0.08,0.2) # 175v5
+    tdrstyle.setTDRStyle()
+
     hpull = TH1F("hpull", "",200,-30,20)
+    tdrstyle.setTDRStyle()
+
     pred = 65.740336799410 #169v5
     #pred = 67.570939637681 #172v5
     #pred = 69.390239814814 #175v5
+
     for i in range(0,Npe):
         hpe = histo.Clone()
         for ibin in range(0,histo.GetNbinsX()):
@@ -137,30 +181,14 @@ def main():
             #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
             hpull.Fill(pull)
         else: 
-            print "Infinite pull!"
- 
-    gStyle.SetOptFit(0111)
-    c1 = TCanvas("c1","")
-    heb.Fit("gaus")
-    heb.Draw()
-    c1.SaveAs("Eb.pdf")
-    c2 = TCanvas("c2","")
-    hde.Fit("gaus")
-    hde.Draw()
-    c2.SaveAs("Deb.pdf")
-    c3 = TCanvas("c3","")
-    hpull.Fit("gaus")
-    hpull.Draw()
-    c3.SaveAs("Pull.pdf")
+            print "WARNING: Infinite pull!"
 
-    # Create the output directory
-    if not os.path.isdir(opt.inDir):
-        os.mkdir(opt.inDir)
-
-    #print "<E_{b}> = (%3.2f #pm %3.2f) GeV" % (Eb,DEb)
+    plotter(heb,"Eb.pdf")
+    plotter(hde,"Deb.pdf")
+    plotter(hpull,"Pull.pdf")
 
     res.Close()
-               
+
 if __name__ == "__main__":
     sys.exit(main())
 
