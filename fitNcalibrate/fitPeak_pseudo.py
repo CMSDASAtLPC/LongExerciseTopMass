@@ -95,8 +95,9 @@ def plotter(h=None,name=None):
     stats.SetY2NDC(0.9)
     stats.SetX1NDC(0.6)
     stats.SetX2NDC(0.9)
+    gPad.RedrawAxis()
+    gPad.Update()
 
-    tdrstyle.setTDRStyle()
     c1.SaveAs(name)
     c1.Close()
 
@@ -149,16 +150,12 @@ def main():
     heb = TH1F("heb", "", 50,61,68) # 169v5
     #heb = TH1F("heb", "", 50,63,70) # 172v5
     #heb = TH1F("heb", "", 50,64,70) # 175v5
-    tdrstyle.setTDRStyle()
 
     hde = TH1F("hde", "", 30,0.09,0.2) # 169v5
     #hde = TH1F("hde", "", 30,0,0.4) # 172v5
     #hde = TH1F("hde", "", 30,0.08,0.2) # 175v5
-    tdrstyle.setTDRStyle()
 
-    hpull = TH1F("hpull", "",200,-30,20)
-    tdrstyle.setTDRStyle()
-
+    hpull = TH1F("hpull", "",50,-20,30)
 
     pred = 65.740336799410 #169v5
     #pred = 67.570939637681 #172v5
