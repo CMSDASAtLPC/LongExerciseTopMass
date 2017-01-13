@@ -155,7 +155,7 @@ def main():
     #hde = TH1F("hde", "", 30,0,0.4) # 172v5
     #hde = TH1F("hde", "", 30,0.08,0.2) # 175v5
 
-    hpull = TH1F("hpull", "",50,-20,30)
+    hpull = TH1F("hpull", "",100,-0.3,0.3)
 
     pred = 65.740336799410 #169v5
     #pred = 67.570939637681 #172v5
@@ -174,6 +174,8 @@ def main():
         Eb,DEb = gPeak(h=hpe,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
         heb.Fill(Eb)
         hde.Fill(DEb)
+        Eb = (Eb-16.51)/0.729
+        DEb = (DEb-16.51)/0.729
         if DEb !=0:
             pull = (Eb - pred)/float(DEb)
             #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
@@ -183,7 +185,7 @@ def main():
 
     plotter(heb,"Eb.pdf")
     plotter(hde,"Deb.pdf")
-    plotter(hpull,"Pull.pdf")
+    plotter(hpull,"Pull_corr.pdf")
 
     res.Close()
 
