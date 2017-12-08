@@ -1,5 +1,5 @@
 # MtopFromEbPeak
-This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2017](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolLPC2017TopExercise) where you will find the most recent version of the instructions below.
+This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2018](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolLPC2018TopExercise) where you will find the most recent version of the instructions below.
 The objective is not only to extract the top-quark mass by measuring the peak position of the energy of b-tagged jets in the laboratory frame, but also to get more familiar with high-energy physics analyses, making use of Python, C and Root. 
 
 ## Installation
@@ -8,21 +8,21 @@ Before installing a fresh CMSSW release, do
    * in csh/tcsh:
 ```
 source /cvmfs/cms.cern.ch/cmsset_default.csh
-setenv SCRAM_ARCH slc6_amd64_gcc491
+setenv SCRAM_ARCH slc6_amd64_gcc530
 ```
    * in bash/sh:
 ```
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-export SCRAM_ARCH=slc6_amd64_gcc491
+export SCRAM_ARCH=slc6_amd64_gcc530
 ```
 Then, install the code by doing
 ```
-cmsrel CMSSW_7_4_14
-cd CMSSW_7_4_14/src
+cmsrel CMSSW_9_2_14
+cd CMSSW_9_2_14/src
 cmsenv
 scram b
-git clone git@github.com:UBParker/MtopFromEbPeak.git UserCode/MtopFromEbPeak
-cd UserCode/MtopFromEbPeak
+git clone git@github.com:CMSDASAtLPC/LongExerciseTopMass.git
+cd LongExerciseTopMass/
 ```
 
 This repository is organised in 4 parts:
