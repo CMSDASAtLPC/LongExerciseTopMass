@@ -136,12 +136,12 @@ def main():
         hName = hName + "bjetenls"
     else:
         hName = hName + "bjetenls_" + samplesList[0]
-    histo = res.Get(hName)
+    histo = res.Get(str(hName))
     histo.SetDirectory(0)
     if opt.isData is not True:
         for sampleInfo in samplesList:
             if sampleInfo is not samplesList[0]: 
-                histo.Add(res.Get("bjetenls/bjetenls_"+sampleInfo).Clone());
+                histo.Add(res.Get(str("bjetenls/bjetenls_"+sampleInfo)).Clone());
 
     #Generate pseudo-exp
     r3 = TRandom3()

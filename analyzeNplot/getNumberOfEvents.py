@@ -18,6 +18,8 @@ for tag,sample in jsonList:
     if not sample[3] in samplesList and not "Data" in sample[3]:
         samplesList.append(sample[3])
 
+print samplesList
+
 #prepare output
 if not os.path.isdir(opt.outDir):
     os.mkdir(opt.outDir)
@@ -44,7 +46,9 @@ inF = ROOT.TFile.Open(os.path.join(os.path.join(opt.inDir,"plots"),"plotter.root
 NSim = 0.
 ErrNSim = 0.
 for sampleInfo in samplesList: 
-    hist = inF.Get("nvtx/nvtx_%s" % sampleInfo)
+    print "nvtx/nvtx_%s" % sampleInfo
+    hist = inF.Get(str("nvtx/nvtx_%s" % sampleInfo))
+
     NTot = 0.;
     ErrNTot = 0.;
     for i in range(1,hist.GetNbinsX()+1):
@@ -59,7 +63,7 @@ for sampleInfo in samplesList:
     else:
         tex.write("%s & $%.1f\\pm%.1f$ \\\\ \n" % (sampleInfo.replace("t#bar{t}","\\ttbar"), NTot, ErrNTot))
  
-hist = inF.Get("nvtx/nvtx")
+hist = inF.Get("nvtx/nvtx").Clone()
 NData = hist.Integral()
 
 # finish output
@@ -77,10 +81,12 @@ tex.write("\n\\end{document}")
     
 tex.close()
 
+savedir = os.getcwd()
 os.chdir(opt.outDir)
 cmd = "pdflatex " + texFile
 os.system(cmd)
 cmd = "rm -f *.aux *.log"
 os.system(cmd)
-os.system("cd -")
+#os.system("cd -")
+os.chdir(savedir)
 print "\n"+os.path.join(opt.outDir,texFile)+" has been created and compiled."

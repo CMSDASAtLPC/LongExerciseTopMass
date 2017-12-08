@@ -340,7 +340,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.3640034,0.5,0.4140034,"CMS DAS 2017, b-energy peak","brNDC");
+   pl = new TPaveLabel(0.07,0.3640034,0.5,0.4140034,"CMS DAS 2018, b-energy peak","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
