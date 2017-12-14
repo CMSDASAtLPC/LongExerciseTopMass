@@ -33,7 +33,7 @@ This repository is organised in 4 parts:
 
 ## Browsing the content of a TFile
 
-The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
+The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2018/long_exercises/TopMass/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
 
 _The input files have been produced thanks to a [setup](https://github.com/pfs/BJetEnergyPeak) kindly provided by P. Silva._
 
@@ -43,31 +43,31 @@ This step must be run in the `analyzeNplot` folder.
 
 To run the event selection and basic filling of histograms using a pre-defined list of samples and cross sections, one can use the following script 
 ```
-python runBJetEnergyPeak.py -i /store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak -j data/samples_Run2015_25ns.json -o nominal -n 8
+python runBJetEnergyPeak.py -i /store/user/cmsdas/2018/long_exercises/TopMass -j data/samples_Run2016_25ns.json -o nominal -n 8
 ```
-Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2016/LONG_EXERCISES/MtopFromEbPeak/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
+Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2018/long_exercises/TopMass/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
 
 The results are stored in Root files int the `nominal` subfolder. They can be plotted together and compared to data using
 ```
-python plotter.py -i nominal -j data/samples_Run2015_25ns.json  -l 2444.
+python plotter.py -i nominal -j data/samples_Run2016_25ns.json  -l 35867.
 ```
 Under `nominal/plots` you'll find a file called `plotter.root`, containing the histograms with the distributions
-normalized by integrated luminosity (2444 /pb,) together with `png` and `pdf` versions of the plots.
+normalized by integrated luminosity (35867 /pb,) together with `png` and `pdf` versions of the plots.
 
 The number of events selected from data and simulations can be obtained from
 ```
-python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2015_25ns.json
+python getNumberOfEvents.py -i nominal -o table -j data/samples_Run2016_25ns.json
 ```
 
 ## Fitting the b jet energy peak
 
 This step must be run in the `fitNcalibrate` folder. A python skeleton named `fitPeak.py` is provided. For MC, the usage is:
 ```
-python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2015_25ns.json" -l 2444.
+python fitPeak.py -i "nominal" -j "../analyzeNplot/data/samples_Run2016_25ns.json" -l 35867.
 ```
 while for data, it is:
 ```
-python fitPeak.py -i "nominal" -l 2444. -d
+python fitPeak.py -i "nominal" -l 35867. -d
 ```
 The argument following `-i` is the folder in which the `plotter.root` file has been previously produced. As previously, `-l` precedes the luminosity and `-j` the path for the json file. 
 
