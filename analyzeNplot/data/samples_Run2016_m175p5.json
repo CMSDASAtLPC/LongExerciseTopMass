@@ -1,0 +1,115 @@
+{
+
+"TTJets_mtop1755"  : [ 
+		 831.76, 
+		 0, 
+		 "/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+		 "t#bar{t}",          
+		 633
+],
+
+"WW" : [
+		    12.178,      
+		    0, 
+		    "/WWTo2L2Nu_13TeV-powheg/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+		    "Diboson",        
+		    400
+],
+
+"WJets" : [
+		61526.7, 
+		0, 
+		"/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+		"W", 
+		858
+],
+
+"atW" : [
+			35.85,      
+			0, 
+			"/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+			"Single top",  
+			618
+],
+
+"tW" : [
+		     35.85,
+		     0, 
+		     "/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M2T4/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/MINIAODSIM", 
+			   "Single top",  
+		     618
+],
+
+"DY" : [
+		    5765.4,      
+		    0, 
+		    "/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv2-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6_ext1-v2/MINIAODSIM", 
+		    "DY", 
+		    868
+],
+
+"MuonEG_2016B" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016B-23Sep2016_v3/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016C" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016C-23Sep2016-v1/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016D" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016D-23Sep2016-v1/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016E" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016E-23Sep2016-v1/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016F" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016F-23Sep2016-v1/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016G" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016G-23Sep2016-v1/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016Hv2" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016H-PromptReco-v2/MINIAOD", 
+			    "Data", 
+			    1
+],
+
+"MuonEG_2016Hv3" : [
+			    1, 
+			    1, 
+			    "/MuonEG/Run2016H-PromptReco_v3/MINIAOD", 
+			    "Data", 
+			    1
+]
+
+}

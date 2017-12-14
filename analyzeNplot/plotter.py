@@ -289,13 +289,16 @@ converts a histogram to a graph with Poisson error bars
 def convertToPoissonErrorGr(h):
 
     htype=h.ClassName()
+    print 'hist type is: ',htype
     if htype.find('TH1')<0 : return None
 
     #check https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
     alpha = 1 - 0.6827;
     grpois = ROOT.TGraphAsymmErrors(h);
     for i in xrange(0,grpois.GetN()+1) :
-        N = grpois.GetY()[i]
+        N = 0
+        try: N = grpois.GetY()[i]
+        except: pass
         if N<200 :
             L = 0
             if N>0 : L = ROOT.Math.gamma_quantile(alpha/2,N,1.)
@@ -305,6 +308,7 @@ def convertToPoissonErrorGr(h):
         else:
             grpois.SetPointEYlow(i, math.sqrt(N))
             grpois.SetPointEYhigh(i,math.sqrt(N))
+            
     return grpois
 
 
