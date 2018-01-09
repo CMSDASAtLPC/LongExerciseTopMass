@@ -215,7 +215,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.7564257,0.5,0.8064257,"arXiv:1509.04044, 19.7 fb^{-1}","brNDC");
+   pl = new TPaveLabel(0.07,0.7564257,0.5,0.8064257,"PRD 93 (2016) 072004, 19.7 fb^{-1}","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -238,14 +238,14 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.6733202,0.5,0.7233202,"CMS 2012, all-hadronic","brNDC");
+   pl = new TPaveLabel(0.07,0.6733202,0.5,0.7233202,"CMS 2012, all-jets","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.6533202,0.5,0.7033202,"arXiv:1509.04044, 18.2 fb^{-1}","brNDC");
+   pl = new TPaveLabel(0.07,0.6533202,0.5,0.7033202,"PRD 93 (2016) 072004, 18.2 fb^{-1}","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -275,7 +275,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.5502146,0.5,0.6002146,"arXiv:1509.04044, 19.7 fb^{-1}","brNDC");
+   pl = new TPaveLabel(0.07,0.5502146,0.5,0.6002146,"PRD 93 (2016) 072004, 19.7 fb^{-1}","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -298,7 +298,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.467109,0.5,0.517109,"CMS combination","brNDC");
+   pl = new TPaveLabel(0.07,0.467109,0.5,0.517109,"CMS legacy","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -308,7 +308,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.447109,0.5,0.497109,"arXiv:1509.04044","brNDC");
+   pl = new TPaveLabel(0.07,0.447109,0.5,0.497109,"PRD 93 (2016) 072004","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -382,7 +382,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.2608978,0.5,0.3108978,"Tevatron combination (2014)","brNDC");
+   pl = new TPaveLabel(0.07,0.2608978,0.5,0.3108978,"Tevatron combination","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -392,7 +392,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.2408978,0.5,0.2908978,"arXiv:1407.2682","brNDC");
+   pl = new TPaveLabel(0.07,0.2408978,0.5,0.2908978,"arXiv:1407.2682 (2014)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -424,7 +424,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.1577922,0.5,0.2077922,"World combination (2014)","brNDC");
+   pl = new TPaveLabel(0.07,0.1577922,0.5,0.2077922,"World combination","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -434,7 +434,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.1377922,0.5,0.1877922,"arXiv:1403.4427","brNDC");
+   pl = new TPaveLabel(0.07,0.1377922,0.5,0.1877922,"arXiv:1403.4427 (2014)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
