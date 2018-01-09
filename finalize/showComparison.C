@@ -33,7 +33,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    gre->SetMarkerStyle(20);
    gre->SetPoint(0,173,-1);
    gre->SetPointError(0,9,0.0001);
-   gre->SetPoint(1,173,5);
+   gre->SetPoint(1,173,6);
    gre->SetPointError(1,9,0.0001);
    
    TH1F *Graph_Graph_Graph1316 = new TH1F("Graph_Graph_Graph1316","Graph",100,162.2,183.8);
@@ -80,20 +80,22 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    gre->SetMarkerColor(ci);
    gre->SetMarkerStyle(20);
    gre->SetMarkerSize(1.5);
-   gre->SetPoint(0,172.82,4.2);
+   gre->SetPoint(0,172.82,5.0);
    gre->SetPointError(0,1.234706,0.0001);
-   gre->SetPoint(1,172.32,3.4);
+   gre->SetPoint(1,172.32,4.2);
    gre->SetPointError(1,0.6407808,0.0001);
-   gre->SetPoint(2,172.35,2.55);
+   gre->SetPoint(2,172.35,3.4);
    gre->SetPointError(2,0.5059644,0.0001);
-   gre->SetPoint(3,172.44,1.75);
+   gre->SetPoint(3,172.44,2.55);
    gre->SetPointError(3,0.4876474,0.0001);
-   gre->SetPoint(4,value,1);
-   gre->SetPointError(4,sqrt(stat*stat+syst*syst),0.0001);
-   gre->SetPoint(5,174.34,0.15);
-   gre->SetPointError(5,0.6382006,0.0001);
-   gre->SetPoint(6,173.34,-0.7);
-   gre->SetPointError(6,0.7596052,0.0001);
+   gre->SetPoint(4,172.25,1.75);
+   gre->SetPointError(4,0.62514,0.0001);
+   gre->SetPoint(5,value,1);
+   gre->SetPointError(5,sqrt(stat*stat+syst*syst),0.0001);
+   gre->SetPoint(6,174.34,0.15);
+   gre->SetPointError(6,0.6382006,0.0001);
+   gre->SetPoint(7,173.34,-0.7);
+   gre->SetPointError(7,0.7596052,0.0001);
    
    TH1F *Graph_Graph_Graph1417 = new TH1F("Graph_Graph_Graph1417","Graph",100,168.8029,175.7771);
    Graph_Graph_Graph1417->SetMinimum(0.);
@@ -139,20 +141,22 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    gre->SetMarkerColor(ci);
    gre->SetMarkerStyle(20);
    gre->SetMarkerSize(1.5);
-   gre->SetPoint(0,172.82,4.2);
+   gre->SetPoint(0,172.82,5.0);
    gre->SetPointError(0,0.19,0.0001);
-   gre->SetPoint(1,172.32,3.4);
+   gre->SetPoint(1,172.32,4.2);
    gre->SetPointError(1,0.25,0.0001);
-   gre->SetPoint(2,172.35,2.55);
+   gre->SetPoint(2,172.35,3.4);
    gre->SetPointError(2,0.16,0.0001);
-   gre->SetPoint(3,172.44,1.75);
+   gre->SetPoint(3,172.44,2.55);
    gre->SetPointError(3,0.13,0.0001);
-   gre->SetPoint(4,value,1);
-   gre->SetPointError(4,stat,0.0001);
-   gre->SetPoint(5,174.34,0.15);
-   gre->SetPointError(5,0.37,0.0001);
-   gre->SetPoint(6,173.34,-0.7);
-   gre->SetPointError(6,0.27,0.0001);
+   gre->SetPoint(4,172.25,1.75);
+   gre->SetPointError(4,0.08,0.0001);
+   gre->SetPoint(5,value,1);
+   gre->SetPointError(5,stat,0.0001);
+   gre->SetPoint(6,174.34,0.15);
+   gre->SetPointError(6,0.37,0.0001);
+   gre->SetPoint(7,173.34,-0.7);
+   gre->SetPointError(7,0.27,0.0001);
    
    TH1F *Graph_Graph_Graph1518 = new TH1F("Graph_Graph_Graph1518","Graph",100,170.761,175.069);
    Graph_Graph_Graph1518->SetMinimum(0);
@@ -208,7 +212,6 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    
 
    TPaveLabel *pl = new TPaveLabel(0.07,0.7764257,0.5,0.8264257,"CMS 2012, dilepton","brNDC");
-     
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -238,29 +241,14 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.6733202,0.5,0.7233202,"CMS 2012, all-jets","brNDC");
+   pl = new TPaveLabel(0.07,0.6939103,0.5,0.7435897,"CMS 2012, all-jets","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.6533202,0.5,0.7033202,"PRD 93 (2016) 072004, 18.2 fb^{-1}","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-   pl->SetTextFont(42);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.6733202,0.93,0.7233202,"172.32 #pm 0.25 #pm 0.59 GeV","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.6533202,0.93,0.7033202,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.07,0.6739103,0.5,0.7235897,"PRD 93 (2016) 072004, 18.2 fb^{-1}","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -268,29 +256,14 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.5702146,0.5,0.6202146,"CMS 2012, lepton+jets","brNDC");
+   pl = new TPaveLabel(0.63,0.6939103,0.93,0.7435897,"172.32 #pm 0.25 #pm 0.59 GeV","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.5502146,0.5,0.6002146,"PRD 93 (2016) 072004, 19.7 fb^{-1}","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-   pl->SetTextFont(42);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.5702146,0.93,0.6202146,"172.35 #pm 0.16 #pm 0.48 GeV","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.5502146,0.93,0.6002146,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.63,0.6739103,0.93,0.7235897,"(value #pm stat #pm syst)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -298,7 +271,37 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.467109,0.5,0.517109,"CMS legacy","brNDC");
+   pl = new TPaveLabel(0.07,0.6073718,0.5,0.6586538,"CMS 2012, lepton+jets","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.07,0.5873718,0.5,0.6386538,"PRD 93 (2016) 072004, 19.7 fb^{-1}","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.6073718,0.93,0.6586538,"172.35 #pm 0.16 #pm 0.48 GeV","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.5873718,0.93,0.6386538,"(value #pm stat #pm syst)","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.07,0.5224359,0.5,0.5721154,"CMS legacy","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -308,28 +311,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.447109,0.5,0.497109,"PRD 93 (2016) 072004","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-
-   ci = TColor::GetColor("#660000");
-   pl->SetTextColor(ci);
-   pl->SetTextFont(42);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.467109,0.93,0.517109,"172.44 #pm 0.13 #pm 0.47 GeV","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-
-   ci = TColor::GetColor("#660000");
-   pl->SetTextColor(ci);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.447109,0.93,0.497109,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.07,0.5024359,0.5,0.5521154,"PRD 93 (2016) 072004","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -340,7 +322,70 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.3640034,0.5,0.4140034,"CMS DAS 2018, b-energy peak","brNDC");
+   pl = new TPaveLabel(0.63,0.5224359,0.93,0.5721154,"172.44 #pm 0.13 #pm 0.47 GeV","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#660000");
+   pl->SetTextColor(ci);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.5024359,0.93,0.5521154,"(value #pm stat #pm syst)","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#660000");
+   pl->SetTextColor(ci);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.07,0.4326923,0.5,0.4823718,"CMS 2016, lepton+jets","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#000000");
+   pl->SetTextColor(ci);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.07,0.4126923,0.5,0.4623718,"TOP-17-007 (2017), 35.9 fb^{-1}","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#000000");
+   pl->SetTextColor(ci);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.4326923,0.93,0.4823718,"172.25 #pm 0.08 #pm 0.62 GeV","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#000000");
+   pl->SetTextColor(ci);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.4126923,0.93,0.4623718,"(value #pm stat #pm syst)","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#000000");
+   pl->SetTextColor(ci);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.07,0.3525641,0.5,0.4022436,"CMS DAS 2018, b-energy peak","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -350,7 +395,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.3440034,0.5,0.3940034,TString::Format("This analysis, %.0f pb^{-1}", lumi),"brNDC");
+   pl = new TPaveLabel(0.07,0.3325641,0.5,0.3822436,TString::Format("This analysis, %.0f pb^{-1}", lumi),"brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -361,7 +406,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.63,0.3640034,0.93,0.4140034,TString::Format("%3.2f #pm %1.2f #pm %1.2f GeV", value, stat, syst),"brNDC");
+   pl = new TPaveLabel(0.63,0.3525641,0.93,0.4022436,TString::Format("%3.2f #pm %1.2f #pm %1.2f GeV", value, stat, syst),"brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -371,7 +416,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.63,0.3440034,0.93,0.3940034,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.63,0.3325641,0.93,0.3822436,"(value #pm stat #pm syst)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -382,7 +427,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.2608978,0.5,0.3108978,"Tevatron combination","brNDC");
+   pl = new TPaveLabel(0.07,0.2516026,0.5,0.3028846,"Tevatron combination","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -392,28 +437,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.2408978,0.5,0.2908978,"arXiv:1407.2682 (2014)","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-
-   ci = TColor::GetColor("#333333");
-   pl->SetTextColor(ci);
-   pl->SetTextFont(42);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.2608978,0.93,0.3108978,"174.34 #pm 0.37 #pm 0.52 GeV","brNDC");
-   pl->SetBorderSize(0);
-   pl->SetFillStyle(0);
-   pl->SetTextAlign(12);
-
-   ci = TColor::GetColor("#333333");
-   pl->SetTextColor(ci);
-   pl->SetTextSize(0.45);
-   pl->Draw();
-   
-   pl = new TPaveLabel(0.63,0.2408978,0.93,0.2908978,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.07,0.2316026,0.5,0.2828846,"arXiv:1407.2682 (2014)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -424,7 +448,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.1577922,0.5,0.2077922,"World combination","brNDC");
+   pl = new TPaveLabel(0.63,0.2516026,0.93,0.3028846,"174.34 #pm 0.37 #pm 0.52 GeV","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -434,7 +458,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.07,0.1377922,0.5,0.1877922,"arXiv:1403.4427 (2014)","brNDC");
+   pl = new TPaveLabel(0.63,0.2316026,0.93,0.2828846,"(value #pm stat #pm syst)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -445,7 +469,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.63,0.1577922,0.93,0.2077922,"173.34 #pm 0.27 #pm 0.71 GeV","brNDC");
+   pl = new TPaveLabel(0.07,0.1666667,0.5,0.2163462,"World combination","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
@@ -455,7 +479,28 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    pl->SetTextSize(0.45);
    pl->Draw();
    
-   pl = new TPaveLabel(0.63,0.1377922,0.93,0.1877922,"(value #pm stat #pm syst)","brNDC");
+   pl = new TPaveLabel(0.07,0.1466667,0.5,0.1963462,"arXiv:1403.4427 (2014)","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#333333");
+   pl->SetTextColor(ci);
+   pl->SetTextFont(42);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.1666667,0.93,0.2163462,"173.34 #pm 0.27 #pm 0.71 GeV","brNDC");
+   pl->SetBorderSize(0);
+   pl->SetFillStyle(0);
+   pl->SetTextAlign(12);
+
+   ci = TColor::GetColor("#333333");
+   pl->SetTextColor(ci);
+   pl->SetTextSize(0.45);
+   pl->Draw();
+   
+   pl = new TPaveLabel(0.63,0.1466667,0.93,0.1963462,"(value #pm stat #pm syst)","brNDC");
    pl->SetBorderSize(0);
    pl->SetFillStyle(0);
    pl->SetTextAlign(12);
