@@ -51,7 +51,7 @@ for sampleInfo in samplesList:
 
     NTot = 0.;
     ErrNTot = 0.;
-    for i in range(1,hist.GetNbinsX()+1):
+    for i in range(0,hist.GetNbinsX()+2):
         NTot += hist.GetBinContent(i)
         ErrNTot += hist.GetBinError(i)*hist.GetBinError(i)
     #NTot = hist.Integral()
@@ -64,7 +64,7 @@ for sampleInfo in samplesList:
         tex.write("%s & $%.1f\\pm%.1f$ \\\\ \n" % (sampleInfo.replace("t#bar{t}","\\ttbar"), NTot, ErrNTot))
  
 hist = inF.Get("nvtx/nvtx").Clone()
-NData = hist.Integral()
+NData = hist.Integral(-1,-1)
 
 # finish output
 tex.write("\\hline\n")

@@ -57,7 +57,7 @@ class Plot(object):
 
     def appendTo(self,outUrl):
         outF = ROOT.TFile.Open(outUrl,'UPDATE')
-        if not outF.cd(self.name):
+        if not outF.GetListOfKeys().Contains(self.name):
             outDir = outF.mkdir(self.name)
             outDir.cd()
         for m in self.mc :
@@ -362,6 +362,7 @@ def main():
     ROOT.gStyle.SetOptStat(0)
     ROOT.gROOT.SetBatch(True)
     outDir=opt.inDir+'/plots'
+    os.system('rm -rf %s' % outDir)
     os.system('mkdir -p %s' % outDir)
     for p in plots : 
         if opt.saveLog    : plots[p].savelog=True
