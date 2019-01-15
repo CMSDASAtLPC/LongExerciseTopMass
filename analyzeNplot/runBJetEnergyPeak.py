@@ -16,10 +16,18 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     #book some histograms
     histos={ 
-        'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
-        'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
         'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
         'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
+        'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
+        
+        #Add new histogram for number of jets
+        #'njets':ROOT.TH1F('???','???',???,???,???),
+        
+        #Add new histogram for electron pt
+
+        #Add new histogram for muon pt
+
         }
     for key in histos:
         histos[key].Sumw2()
@@ -50,7 +58,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             if tree.Jet_CombIVF[ij]>0.8484: # medium cut
                 nBtags+=1
                 taggedJetsP4.append(jp4)
-        
+
+
         if nJets<2 : continue
         if nBtags!=1 and nBtags!=2 : continue
 
@@ -71,8 +80,14 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         if tree.nGenWeight>0 : evWgt *= tree.GenWeights[0]
 
         #ready to fill the histograms
-        histos['nvtx'].Fill(tree.nPV,evWgt)
-        histos['nbtags'].Fill(nBtags,evWgt)
+        #fill nvtx plot
+        #histos['nvtx'].Fill(???,???)
+        
+        #fill nbtag plot
+        #histos['nbtags'].Fill(???,???)
+
+        #fill electron and muon plots
+        #
 
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
