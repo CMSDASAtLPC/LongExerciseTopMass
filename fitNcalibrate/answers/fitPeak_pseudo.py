@@ -88,15 +88,15 @@ def plotter(h=None,name=None):
     label2.SetTextAlign(11)
     label2.DrawLatex(0.33, 0.92, "#it{Simulation}")
 
-    gPad.Update()
-    stats = gPad.GetPrimitive("stats")
+    c1.Update()
+    stats = c1.GetPrimitive("stats")
     stats.__class__ = ROOT.TPaveStats
     stats.SetY1NDC(0.6)
     stats.SetY2NDC(0.9)
     stats.SetX1NDC(0.6)
     stats.SetX2NDC(0.9)
-    gPad.RedrawAxis()
-    gPad.Update()
+    c1.RedrawAxis()
+    c1.Update()
 
     c1.SaveAs(name)
     c1.Close()
@@ -155,8 +155,8 @@ def main():
     hde = TH1F("hde", "", 30,0,0.4) # 172v5
     #hde = TH1F("hde", "", 30,0.08,0.2) # 175v5
 
-    hpull = TH1F("hpull", "",50,-30,30)
-    hpullcal = TH1F("hpullcal", "",50,-30,30)
+    hpull = TH1F("hpull", "",100,-100,100)
+    hpullcal = TH1F("hpullcal", "",100,-100,100)
 
     #pred = 65.740 #169v5
     pred = 67.57 #172v5

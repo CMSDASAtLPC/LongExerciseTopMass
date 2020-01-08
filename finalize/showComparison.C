@@ -23,7 +23,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    multigraph->SetName("");
    multigraph->SetTitle(";m_{t} [GeV];");
    
-   gre = new TGraphErrors(1);
+   TGraphErrors *gre = new TGraphErrors(1);
    gre->SetName("Graph");
    gre->SetTitle("Graph");
    gre->SetFillColor(1);
@@ -72,7 +72,7 @@ int showComparison(double lumi = 2444., double value = 172.5, double stat = 5., 
    gre->SetTitle("Graph");
    gre->SetFillColor(1);
 
-   ci = TColor::GetColor("#cc0000");
+   Int_t ci = TColor::GetColor("#cc0000");
    gre->SetLineColor(ci);
    gre->SetLineWidth(2);
 
