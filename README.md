@@ -1,5 +1,5 @@
 # MtopFromEbPeak
-This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2019](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolLPC2019TopExercise) where you will find the most recent version of the instructions below.
+This repository contains some skeletons for [the long exercise related to Top physics at the CMS Data Analysis School 2020](https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideCMSDataAnalysisSchoolLPC2020TopExercise) where you will find the most recent version of the instructions below.
 The objective is not only to extract the top-quark mass by measuring the peak position of the energy of b-tagged jets in the laboratory frame, but also to get more familiar with high-energy physics analyses, making use of Python, C and Root. 
 
 ## Installation
@@ -8,17 +8,17 @@ Before installing a fresh CMSSW release, do
    * in csh/tcsh:
 ```
 source /cvmfs/cms.cern.ch/cmsset_default.csh
-setenv SCRAM_ARCH slc6_amd64_gcc530
+setenv SCRAM_ARCH slc7_amd64_gcc700
 ```
    * in bash/sh:
 ```
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-export SCRAM_ARCH=slc6_amd64_gcc530
+export SCRAM_ARCH=slc7_amd64_gcc700
 ```
 Then, install the code by doing
 ```
-cmsrel CMSSW_9_2_14
-cd CMSSW_9_2_14/src
+cmsrel CMSSW_10_6_4
+cd CMSSW_10_6_4/src
 cmsenv
 scram b
 git clone git@github.com:CMSDASAtLPC/LongExerciseTopMass.git
@@ -33,7 +33,7 @@ This repository is organised in 4 parts:
 
 ## Browsing the content of a TFile
 
-The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2019/long_exercises/TopMass/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
+The first step of the exercise consists in opening an input file stored in `/eos/uscms/store/user/cmsdas/2020/long_exercises/TopMass/` and plotting the jet transverse momentum. Once you have written your own small Python script, you can compare it to the one named `controlPlots.py`in the `familiarization` folder. 
 
 _The input files have been produced thanks to a [setup](https://github.com/pfs/BJetEnergyPeak) kindly provided by P. Silva._
 
@@ -43,9 +43,9 @@ This step must be run in the `analyzeNplot` folder.
 
 To run the event selection and basic filling of histograms using a pre-defined list of samples and cross sections, one can use the following script 
 ```
-python runBJetEnergyPeak.py -i /store/user/cmsdas/2019/long_exercises/TopMass -j data/samples_Run2016_25ns.json -o nominal -n 2
+python runBJetEnergyPeak.py -i /store/user/cmsdas/2020/long_exercises/TopMass -j data/samples_Run2016_25ns.json -o nominal -n 2
 ```
-Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2019/long_exercises/TopMass/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
+Indeed, the Root files to analyze are stored in `/eos/uscms/store/user/cmsdas/2020/long_exercises/TopMass/,` while the `data` subfolder contains information for reweighting (cross-sections, PU, b-tagging....). This steps takes approximatively 10-15 mn.
 
 The results are stored in Root files int the `nominal` subfolder. They can be plotted together and compared to data using
 ```
