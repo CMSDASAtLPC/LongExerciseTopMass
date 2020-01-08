@@ -26,7 +26,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         # JEC: uncorrelated group
 
-
         # JEC: in-situ correlation group
 
         # JEC: inter-calibration
@@ -68,16 +67,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         xsecWgt_up = 1
         xsecWgt_down = 1
 
-        #25% uncertainty on ttgamma xsec
-        if 'SingleT' in inFileURL:
+        # 25% uncertainty on ttgamma xsec
+        # if 'SingleT' in inFileURL:
             # xsecWgt_up = ???
             # xsecWgt_down = ???
         # 100% uncertainty on WJets xsec
-        if 'WJets' in inFileURL:
+        # if 'WJets' in inFileURL:
             # xsecWgt_up = ???
             # xsecWgt_down = ???
         # 50% uncertainty on other processes 
-        if 'DY' in inFileURL or 'WZ' in inFileURL or 'ZZ' in inFileURL or 'WZ' in inFileURL:
+        # if 'DY' in inFileURL or 'WZ' in inFileURL or 'ZZ' in inFileURL or 'WZ' in inFileURL:
             # xsecWgt_up = ???
             # xsecWgt_down = ???
 
@@ -145,9 +144,9 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             ## fill JEC histograms
             for ij in xrange(0,len(taggedJetsP4)):
                 if ij>1 : break
-                if iJEC > 0 :
+                # if iJEC > 0 :
                     #fill JEC histograms
-                else :
+                # else :
                     #fill JER histogram
 
                 

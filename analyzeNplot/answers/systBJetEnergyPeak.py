@@ -15,7 +15,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     print '...analysing %s' % inFileURL
     
-    #book some histograms
+    #book some histograms for systematic samples
     histos={ 
         # nominal (for xcheck)
         'bjetenls_nominal':ROOT.TH1F('bjetenls_nominal',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
@@ -86,6 +86,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_jec_26_up':ROOT.TH1F('bjetenls_jec_26_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_jec_26_down':ROOT.TH1F('bjetenls_jec_26_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
+        # Other Systematics
         'bjetenls_lep_up':ROOT.TH1F('bjetenls_lep_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_lep_down':ROOT.TH1F('bjetenls_lep_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_PU_up':ROOT.TH1F('bjetenls_PU_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
@@ -94,8 +95,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         'bjetenls_norm_up':ROOT.TH1F('bjetenls_norm_up',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_norm_down':ROOT.TH1F('bjetenls_norm_down',';log(E); 1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-
         }
+
     for key in histos:
         histos[key].Sumw2()
         histos[key].SetDirectory(0)
@@ -104,6 +105,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     fIn=ROOT.TFile.Open(inFileURL)
     tree=fIn.Get('data')
     totalEntries=tree.GetEntriesFast()
+
     for i in xrange(0,totalEntries):
 
         tree.GetEntry(i)
@@ -123,12 +125,16 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             
         xsecWgt_up = 1
         xsecWgt_down = 1
+
+        # 25% uncertainty on ttgamma xsec
         if 'SingleT' in inFileURL:
             xsecWgt_up = 1.25
             xsecWgt_down = 0.75
+        # 100% uncertainty on WJets xsec
         if 'WJets' in inFileURL:
             xsecWgt_up = 2
             xsecWgt_down = 0
+        # 50% uncertainty on other processes 
         if 'DY' in inFileURL or 'WZ' in inFileURL or 'ZZ' in inFileURL or 'WZ' in inFileURL:
             xsecWgt_up = 1.5
             xsecWgt_down = 0.5
@@ -154,6 +160,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         if nLeptons<2 : continue
 
+
+        #Fill histograms for JEC variations
         for iJEC in range (0,27):
 
             #require at least two jets
@@ -169,6 +177,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                 jp4=ROOT.TLorentzVector()
                 jp4.SetPtEtaPhiM(tree.Jet_pt[ij],tree.Jet_eta[ij],tree.Jet_phi[ij],tree.Jet_mass[ij])
 
+                ### access JEC variations from tree.Jet_unc branch
                 w_jec_up= 1.+tree.Jet_uncs[ ij * 27 + iJEC ]
                 w_jec_down= 1.-tree.Jet_uncs[ ij * 27 + iJEC ]
 
@@ -186,15 +195,18 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                     if abs(tree.Jet_flavour[ij]) == 5:
                         matchedJetsP4.append(jp4)
         
+                # nJet and nBJet cut
                 if nJets<2 : continue
                 if nBtags!=1 and nBtags!=2 : continue
        
                 for ij in xrange(0,len(taggedJetsP4)):
                     if ij>1 : break
                     if iJEC > 0 :
+                        #fill JEC histograms
                         histos['bjetenls_jec_'+str(iJEC)+'_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
                         histos['bjetenls_jec_'+str(iJEC)+'_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E())
                     else :
+                        #fill JER histogram
                         histos['bjetenls_jer_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4_up[ij].E())
                         histos['bjetenls_jer_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4_down[ij].E())
 
@@ -203,6 +215,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
+            #fill other histograms (nominal and weight based)
             histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
             histos['bjetenls_lep_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[1]/taggedJetsP4[ij].E())     
             histos['bjetenls_lep_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[2]/taggedJetsP4[ij].E())
