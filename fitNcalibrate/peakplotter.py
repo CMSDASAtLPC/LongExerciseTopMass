@@ -30,6 +30,16 @@ graph.GetYaxis().SetTitleOffset(1.4)
 
 gfit = TF1("f","[0] + [1] * x")
 graph.Fit(gfit)
+
+Covariance1 = TVirtualFitter.GetFitter().GetCovarianceMatrixElement(0,1)
+print Covariance1
+Covariance2 = TVirtualFitter.GetFitter().GetCovarianceMatrixElement(1,0)
+print Covariance2
+Variance0 = TVirtualFitter.GetFitter().GetCovarianceMatrixElement(0,0)
+print Variance0
+Variance1 = TVirtualFitter.GetFitter().GetCovarianceMatrixElement(1,1)
+print Variance1
+
 graph.Draw("AP")
 
 ideal = TGraph(len(theor),theor,theor)
