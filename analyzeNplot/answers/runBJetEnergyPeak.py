@@ -111,8 +111,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             if lid!=11 and lid!=13:
                 raise Exception("Wrong lepton id!")
 
-            if ij = 0: histos['lep0pt'].Fill(leptonsP4[ij].Pt(),evWgt)
-            if ij = 1: histos['lep1pt'].Fill(leptonsP4[ij].Pt(),evWgt)
+            if ij == 0: histos['lep0pt'].Fill(leptonsP4[ij].Pt(),evWgt)
+            if ij == 1: histos['lep1pt'].Fill(leptonsP4[ij].Pt(),evWgt)
 
             #hard-coded masses for electrons and muons
             #lmass=0.00051 if lid==11 else 0.106

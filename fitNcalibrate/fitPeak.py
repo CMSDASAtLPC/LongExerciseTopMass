@@ -31,8 +31,8 @@ def gPeak(h=None,inDir=None,isData=None,lumi=None):
     ## Set the function
     fitfunc = TF1("Gaussian fit", myFitFunc, minToFit, maxToFit, 3)
     ## Set normalization
-    fitfunc.SetParameter(2, h.Integral());
-    fitfunc.SetParLimits(2, 0.1*h.Integral(), 2.5*h.Integral());
+    fitfunc.SetParameter(0, h.Integral());
+    fitfunc.SetParLimits(0, 0.1*h.Integral(), 2.5*h.Integral());
     ## Set gaussian mean starting value and limits
     fitfunc.SetParameter(1, 4.2);
     fitfunc.SetParLimits(1, 4., 4.4);
