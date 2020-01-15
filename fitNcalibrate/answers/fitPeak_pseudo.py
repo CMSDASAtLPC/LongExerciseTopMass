@@ -178,8 +178,8 @@ def main():
         pull=(Eb-pred)/DEb
         hpull.Fill(pull)
 
-        Ebcal=(Eb-16.51)/0.729
-        DEbcal=DEb/0.729
+        Ebcal=(Eb-29.6)/0.5312
+        DEbcal=DEb/0.5312
         #print "Eb:", Eb, "  DEb:", DEb, "  Pull:", pull, "Delta:", abs(Eb-pred)
         pullcal=(Ebcal-pred)/DEbcal
         hpullcal.Fill(pullcal)

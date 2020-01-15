@@ -104,17 +104,18 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         for ij in xrange(0,len(matchedJetsP4)):
             histos['bmjeteta'].Fill(matchedJetsP4[ij].Eta(),evWgt)
+        
         for ij in xrange(0,len(leptonsP4)):
             if ij>1 : break
             lid=abs(tree.Lepton_id[ij])
             if lid!=11 and lid!=13:
                 raise Exception("Wrong lepton id!")
 
-            histos['lep0pt'].Fill(leptonsP4[ij].Pt(),evWgt)
-            histos['lep1pt'].Fill(leptonsP4[ij].Pt(),evWgt)
+            if ij = 0: histos['lep0pt'].Fill(leptonsP4[ij].Pt(),evWgt)
+            if ij = 1: histos['lep1pt'].Fill(leptonsP4[ij].Pt(),evWgt)
 
             #hard-coded masses for electrons and muons
-            lmass=0.00051 if lid==11 else 0.106
+            #lmass=0.00051 if lid==11 else 0.106
             ltag='el' if lid==11 else 'mu'
             histos[ltag+'pt'].Fill(leptonsP4[ij].Perp(),evWgt)
             histos[ltag+'eta'].Fill(leptonsP4[ij].Eta(),evWgt)
