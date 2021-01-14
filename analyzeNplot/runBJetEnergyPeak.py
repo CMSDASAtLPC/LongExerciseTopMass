@@ -16,18 +16,29 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
     #book some histograms
     histos={ 
-        'bjeten':ROOT.TH1F('bjeten',';Energy [GeV]; Jets',30,0,300),
-        'bjetenls':ROOT.TH1F('bjetenls',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'nvtx'  :ROOT.TH1F('nvtx',';Vertex multiplicity; Events',30,0,30),
-        'nbtags':ROOT.TH1F('nbtags',';b-tag multiplicity; Events',5,0,5),
+        'bjeten':ROOT.TH1F('bjeten','bjet Energy;Energy [GeV]; Jets',30,0,500),
+        'bjetenls':ROOT.TH1F('bjetenls','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        # More bins on bjet energy
+        'bjetenls50bins':ROOT.TH1F('bjetenls50','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',50,3.,7.),
+        'bjetenls100bins':ROOT.TH1F('bjetenls100','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',100,3.,7.),
+
+        'nvtx'  :ROOT.TH1F('nvtx','Number of Vertices;Vertex multiplicity; Events',50,0,50),
+        'nbtags':ROOT.TH1F('nbtags','B-tags;b-tag multiplicity; Events',5,0,5),
         
         #Add new histogram for number of jets
-        #'njets':ROOT.TH1F('???','???',???,???,???),
+        'njets':ROOT.TH1F('njets','Number of Jets;jet multiplicity; Events',10,0,10),
         
         #Add new histogram for electron pt
+        'e_pt':ROOT.TH1F('e_pt',';electron p_{T};Events',30,0,200),
+        'e_eta':ROOT.TH1F('e_eta',';electron #eta;Events',30,-2.8,2.8),
+        ### Add eta for electron and muon
 
         #Add new histogram for muon pt
+        'muon_pt':ROOT.TH1F('muon_pt',';muon p_{T};Events',30,0,200),
+       	'muon_eta':ROOT.TH1F('muon_eta',';muon #eta;Events',30,-2.8,2.8),
 
+        # Invariant mass of composite
+        'M_emu':ROOT.TH1F('M_emu',';electron-muon mass;Events',30,0,500),
         }
     for key in histos:
         histos[key].Sumw2()
@@ -62,8 +73,11 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         if nJets<2 : continue
         if nBtags!=1 and nBtags!=2 : continue
-
-        for ij in xrange(0,tree.nLepton):
+        
+        #print("I have Jets")
+        lp_indices=[]
+	
+	for ij in xrange(0,tree.nLepton):
             #get the kinematics and select the lepton                       
             lp4=ROOT.TLorentzVector()
             lp4.SetPtEtaPhiM(tree.Lepton_pt[ij],tree.Lepton_eta[ij],tree.Lepton_phi[ij],0)
@@ -71,8 +85,40 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
             #count selected leptons                    
             nLeptons +=1
+	    lp_indices.append(ij)
+        #print("I have ",nLeptons,"leptons")
 
         if nLeptons<2 : continue
+	if nLeptons==2: 
+            lpindex1=lp_indices[0]
+            lpindex2=lp_indices[1]
+        else:
+            print("I have {} leptons".format(nLeptons))
+            continue
+        if not ( (abs(tree.Lepton_id[lpindex1])==11 and abs(tree.Lepton_id[lpindex2])==13) or 
+           (abs(tree.Lepton_id[lpindex1])==13 and abs(tree.Lepton_id[lpindex2])==11)): 
+            print(tree.Lepton_id[lpindex1],tree.Lepton_id[lpindex2])
+            continue 
+          
+           
+        if tree.Lepton_ch[lpindex1] * tree.Lepton_ch[lpindex2] >0 : 
+            print("Charge product positive",tree.Lepton_ch[lpindex1],tree.Lepton_ch[lpindex2])
+            continue
+
+        l1p4=ROOT.TLorentzVector()
+        l1p4.SetPtEtaPhiM(tree.Lepton_pt[lpindex1],tree.Lepton_eta[lpindex1],tree.Lepton_phi[lpindex1],0)
+        l2p4=ROOT.TLorentzVector()
+        l2p4.SetPtEtaPhiM(tree.Lepton_pt[lpindex2],tree.Lepton_eta[lpindex2],tree.Lepton_phi[lpindex2],0)
+
+ 	#print('I have 2 leptons again')
+
+        emup4 = l1p4+l2p4
+        M_emu= emup4.M()
+        if M_emu < 12 :  
+           print("Mass is {}, skipping.....".format(M_emu))
+           continue
+        #print("Mass is in the right mass range")
+
 
         #generator level weight only for MC
         evWgt=1.0
@@ -81,19 +127,40 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         #ready to fill the histograms
         #fill nvtx plot
-        #histos['nvtx'].Fill(???,???)
+        histos['nvtx'].Fill(tree.nPV,evWgt)
         
         #fill nbtag plot
-        #histos['nbtags'].Fill(???,???)
+        histos['nbtags'].Fill(nBtags,evWgt)
+
+        #fill njets plot
+        histos['njets'].Fill(nJets,evWgt)
+
 
         #fill electron and muon plots
-        #
+
+	if (abs(tree.Lepton_id[lpindex1])==11):
+           e_index=lpindex1
+           mu_index=lpindex2
+        else:
+       	   e_index=lpindex2
+       	   mu_index=lpindex1
+
+        histos['e_pt'].Fill(tree.Lepton_pt[e_index],evWgt)
+        histos['e_eta'].Fill(tree.Lepton_eta[e_index],evWgt)
+        histos['muon_pt'].Fill(tree.Lepton_pt[mu_index],evWgt)
+        histos['muon_eta'].Fill(tree.Lepton_eta[mu_index],evWgt)
+        histos['M_emu'].Fill(M_emu,evWgt)
+       
+ 
+
 
         #use up to two leading b-tagged jets
         for ij in xrange(0,len(taggedJetsP4)):
             if ij>1 : break
             histos['bjeten'].Fill(taggedJetsP4[ij].E(),evWgt)
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            histos['bjetenls50bins'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            histos['bjetenls100bins'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
 
     fIn.Close()
 
