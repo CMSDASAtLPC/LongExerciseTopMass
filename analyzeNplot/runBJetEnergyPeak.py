@@ -21,6 +21,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         # More bins on bjet energy
         'bjetenls50bins':ROOT.TH1F('bjetenls50','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',50,3.,7.),
         'bjetenls100bins':ROOT.TH1F('bjetenls100','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',100,3.,7.),
+        'bjetenls40bins':ROOT.TH1F('bjetenls40','bjet Energy normalized;log(E);  1/E dN_{b jets}/dlog(E)',40,3.,7.),
 
         'nvtx'  :ROOT.TH1F('nvtx','Number of Vertices;Vertex multiplicity; Events',50,0,50),
         'nbtags':ROOT.TH1F('nbtags','B-tags;b-tag multiplicity; Events',5,0,5),
@@ -39,7 +40,21 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
         # Invariant mass of composite
         'M_emu':ROOT.TH1F('M_emu',';electron-muon mass;Events',30,0,500),
+
+        # Pileup
+        #'PU':ROOT.TH1F('PU',';PU;Events',30,0,500),
+
+
+
+
+
+
+
         }
+
+
+
+
     for key in histos:
         histos[key].Sumw2()
         histos[key].SetDirectory(0)
@@ -135,7 +150,6 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         #fill njets plot
         histos['njets'].Fill(nJets,evWgt)
 
-
         #fill electron and muon plots
 
 	if (abs(tree.Lepton_id[lpindex1])==11):
@@ -161,6 +175,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             histos['bjetenls'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
             histos['bjetenls50bins'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
             histos['bjetenls100bins'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
+            histos['bjetenls40bins'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt/taggedJetsP4[ij].E())
 
     fIn.Close()
 
